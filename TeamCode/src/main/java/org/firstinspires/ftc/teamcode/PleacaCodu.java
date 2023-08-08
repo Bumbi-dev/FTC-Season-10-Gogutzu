@@ -44,23 +44,37 @@ public class PleacaCodu extends LinearOpMode {
             y -= 0.2f;
 
         if(gamepad1.dpad_right)
-            x -= 0.2f;
-
-        if(gamepad1.dpad_left)
             x += 0.2f;
 
-        if(y != 0) {
+        if(gamepad1.dpad_left)
+            x -= 0.2f;
+
+        if(y != 0) {//pt cv omni - directional float putere, putere = y, putere -= x sau ceva. pt diagonala
+
             if(x != 0)
-                if (x > 0)
-                    robot.moveDiagonal(y, "FD");
+                if (x > 0) {
+                    if(y > 0)
+                        robot.moveDiagonal(y, "FD");
+                    else
+                        robot.moveDiagonal(y, "FS");
+                }
+
                 else
-                    robot.moveDiagonal(y, "FS");
+                    if(y > 0)
+                        robot.moveDiagonal(y, "FS");
+                    else
+                        robot.moveDiagonal(y, "FD");
             else
                 robot.moveStraight(y);
             return;
         }
 
-        float rotatie = gamepad1.left_trigger - gamepad1.right_trigger;
+        if(x != 0) {
+            robot.moveStrafe(-x);
+            return;
+        }
+
+        float rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
 
         if(rotatie != 0) {
             robot.beyBlade(rotatie / 2);

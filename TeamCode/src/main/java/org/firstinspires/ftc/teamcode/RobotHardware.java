@@ -24,10 +24,10 @@ public class RobotHardware
         motorSS = hwMap.get(DcMotor.class, "motor SpateStanga");
         motorSD = hwMap.get(DcMotor.class, "motor SpateDreapta");
 
-        motorFS.setDirection(DcMotor.Direction.FORWARD);
-        motorFD.setDirection(DcMotor.Direction.REVERSE);
-        motorSS.setDirection(DcMotor.Direction.FORWARD);
-        motorSD.setDirection(DcMotor.Direction.REVERSE);
+        motorFS.setDirection(DcMotor.Direction.REVERSE);
+        motorFD.setDirection(DcMotor.Direction.FORWARD);
+        motorSS.setDirection(DcMotor.Direction.REVERSE);
+        motorSD.setDirection(DcMotor.Direction.FORWARD);
 
         stop();
 
@@ -35,29 +35,38 @@ public class RobotHardware
         motorFD.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorSS.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorSD.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        motorFS.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorFD.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorSS.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorSD.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void moveStraight(float x) {
-        float y = -x;//acceleratie(x, "FS");
+        float y = x;//acceleratie(x, "FS");
 
         motorFS.setPower(y); motorFD.setPower(y);
         motorSS.setPower(y); motorSD.setPower(y);
     }
 
     public void moveStrafe(float x) {//spre dreapta
-        motorFS.setPower(x); motorFD.setPower(-x);
-        motorSS.setPower(-x); motorSD.setPower(x);
+        motorFS.setPower(-x); motorFD.setPower(x);
+        motorSS.setPower(x); motorSD.setPower(-x);
     }
 
     public void moveDiagonal(float x, String way) {
         if(way.equals("FD")) {//x = y
-            motorFS.setPower(0); motorSS.setPower(x);
-            motorFD.setPower(x); motorSD.setPower(0);
+            motorFS.setPower(x); motorFD.setPower(0);
+            motorSS.setPower(0); motorSD.setPower(x);
         }
         else {//x = -y
-            motorFS.setPower(x);  motorFD.setPower(0);
-            motorSS.setPower(0);  motorSD.setPower(x);
+            motorFS.setPower(0);  motorFD.setPower(x);
+            motorSS.setPower(x);  motorSD.setPower(0);
         }
+    }
+
+    public void moveDiagonal(float x, float y) {
+
     }
 
     public void beyBlade(float x) {//spre dreapta
