@@ -7,19 +7,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class Autonomie_preload extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware();
+    Float nr = 0f;
 
     @Override
     public void runOpMode() {
 
         robot.init(hardwareMap);
 
-        telemetry.addLine("Dai drumu"); telemetry.update();
-
         waitForStart();
 
         while (opModeIsActive()) {
-            robot.motorFS.setPower(0.1); robot.motorFD.setPower(0.1);
-            robot.motorSS.setPower(0.1); robot.motorSD.setPower(0.1);
+            if(nr < 1) {
+                robot.motorFS.setPower(0.1); robot.motorFD.setPower(0.1);
+                robot.motorSS.setPower(0.1); robot.motorSD.setPower(0.1);
+            }
+
+            nr++;
         }
     }
 }

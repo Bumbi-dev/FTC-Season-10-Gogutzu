@@ -37,10 +37,10 @@ public class RobotHardware
 
         stop();
 
-        motorFS.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFD.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorSS.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorSD.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorFS.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorFD.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorSS.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorSD.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         motorFS.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorFD.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
