@@ -28,7 +28,6 @@ public class PleacaCodu extends LinearOpMode {
 
             straightMove();
 
-
         }
 
     }
