@@ -1,7 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 public class RobotHardware
@@ -139,5 +145,13 @@ public class RobotHardware
         return powerNow;
     }
 
+    public void motorsTelemetry(Telemetry telemetrie) {
 
+        telemetrie.addLine("FD: " + (motorFD.getPower()));
+        telemetrie.addLine("FS: " + (motorFS.getPower()));
+        telemetrie.addLine("SS: " + (motorSS.getPower()));
+        telemetrie.addLine("SD: " + (motorSD.getPower()));
+        telemetrie.update();
+
+    }
 }

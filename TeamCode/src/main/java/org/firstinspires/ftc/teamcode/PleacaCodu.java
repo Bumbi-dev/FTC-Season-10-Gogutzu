@@ -19,15 +19,17 @@ public class PleacaCodu extends LinearOpMode {
 
         while (opModeIsActive()) {
 
+            robot.motorsTelemetry(telemetry);
+
             if(gamepad1.left_bumper || gamepad1.right_bumper)
                 return;
 
             if(gamepad1.right_stick_button) {
                 omniDirectionalMove();
+                continue;
             }
 
             straightMove();
-
         }
 
     }
@@ -38,13 +40,13 @@ public class PleacaCodu extends LinearOpMode {
         float x = 0;
 
         if(gamepad1.dpad_up)
-            y += 0.2f;
+            y = 0.2f;
 
         if(gamepad1.dpad_down)
             y -= 0.2f;
 
         if(gamepad1.dpad_right)
-            x += 0.2f;
+            x = 0.2f;
 
         if(gamepad1.dpad_left)
             x -= 0.2f;
