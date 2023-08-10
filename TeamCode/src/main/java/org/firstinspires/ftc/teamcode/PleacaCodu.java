@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name="vruuuuum", group="Bubu")
+@TeleOp(name = "vruuuuum", group = "Bubu")
 public class PleacaCodu extends RobotHardware{
 
     @Override
@@ -12,18 +12,29 @@ public class PleacaCodu extends RobotHardware{
         init(hardwareMap);
 
         telemetry.addLine("Dai drumu"); telemetry.update();
-        
-        waitForStart();
+
+        ElapsedTime runtime = new ElapsedTime();
 
         boolean omni = false;
+
+        waitForStart();
 
         while (opModeIsActive()) {
             if(gamepad1.left_bumper || gamepad1.right_bumper)
                 return;
 
+            //Rotation
+            float rotatie = gamepad1.right_trigger - gamepad1.left_trigger;//in omni direction sa adauge putere pt pareta in care se roteste
 
-            if(gamepad1.right_stick_button)
+            if(rotatie != 0) {
+                beyBlade(rotatie);
+                continue;
+            }
+
+            if (gamepad1.right_stick_button && runtime.milliseconds() >= 0.2) {//asteapta 0.2 secunde intre schimbari
                 omni = !omni;
+                runtime.reset();
+            }
 
             if(omni) {
                 omniDirectionalMove();
@@ -32,18 +43,41 @@ public class PleacaCodu extends RobotHardware{
 
             straightMove();
         }
-
     }
 
+    void omniDirectionalMove(){
+        float y;
+        float x;
+        float fd, fs, sd, ss;
+
+        y = -gamepad1.left_stick_y;
+        x = gamepad1.left_stick_x;
+
+        fs = y + x; fd = y - x;
+        ss = y - x; sd = y + x;
+
+        telemetry.addLine(fs + " " + fd + '\n' +
+                                   ss + " " + sd);
+
+        telemetry.update();
+
+        //max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+        //max = Math.max(max, Math.abs(leftBackPower));
+        //max = Math.max(max, Math.abs(rightBackPower));
+
+        //if (max > 1.0) {
+        //    leftFrontPower  /= max;
+        //    rightFrontPower /= max;
+        //    leftBackPower   /= max;
+        //    rightBackPower  /= max;
+        //}
+
+        //motorFS.setPower(fs);  motorFD.setPower(fd);
+        //motorSS.setPower(ss);  motorSD.setPower(sd);
+    }
+
+
     void straightMove() {
-        //Rotation mode
-        float rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
-
-        if(rotatie != 0) {
-            beyBlade(rotatie);
-            return;
-        }
-
         //Navigation mode
         float y = 0;
         float x = 0;
@@ -61,32 +95,11 @@ public class PleacaCodu extends RobotHardware{
         if(gamepad1.dpad_left)
             x -= 0.5f;
 
-        fs = y + x; fd = y - x;// ar trebui injumatatite diagonalele cand merge pe diagonala
+        fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
 
 
         motorFS.setPower(fs);  motorFD.setPower(fd);
         motorSS.setPower(ss);  motorSD.setPower(sd);
-    }
-
-    void omniDirectionalMove(){
-        float y;
-        float x;
-        float fd, fs, sd, ss;
-
-        y = -gamepad1.left_stick_y / 2;
-        x = gamepad1.left_stick_x / 2;
-
-        fs = y + x; fd = y - x;// ar trebui injumatatite diagonalele cand merge pe diagonala
-        ss = y - x; sd = y + x;
-
-
-        motorFS.setPower(fs);  motorFD.setPower(fd);
-        motorSS.setPower(ss);  motorSD.setPower(sd);
-    }
-
-    public void setDiagonal(float x, float y) {
-        motorFS.setPower(x); motorFD.setPower(y);
-        motorSS.setPower(y); motorSD.setPower(x);
     }
 }

@@ -1,13 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
@@ -21,7 +17,7 @@ public class RobotHardware extends LinearOpMode {
 
     HardwareMap hwMap = null;
 
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
 
         hwMap = ahwMap;
 
@@ -35,7 +31,7 @@ public class RobotHardware extends LinearOpMode {
         motorSS.setDirection(DcMotor.Direction.REVERSE);
         motorSD.setDirection(DcMotor.Direction.FORWARD);
 
-        stop();
+        frana();
 
         motorFS.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorFD.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -49,18 +45,20 @@ public class RobotHardware extends LinearOpMode {
     }
 
     public void moveStraight(float x) {
-        float y = x;//acceleratie(x, "FS");
+        /* pentru acceleratie:
+           x = acceleratie(x, "FS");
+        */
 
-        motorFS.setPower(y); motorFD.setPower(y);
-        motorSS.setPower(y); motorSD.setPower(y);
+        motorFS.setPower(x); motorFD.setPower(x);
+        motorSS.setPower(x); motorSD.setPower(x);
     }
 
-    public void moveStrafe(float x) {//spre dreapta
+    public void moveStrafe(float x) {//miscare laterala
         motorFS.setPower(-x); motorFD.setPower(x);
         motorSS.setPower(x); motorSD.setPower(-x);
     }
 
-    public void moveDiagonal(float x, String way) {
+    public void moveDiagonal(float x, String way) {//miscare pe diagonala
         if(way.equals("FD")) {//x = y
             motorFS.setPower(x); motorFD.setPower(0);
             motorSS.setPower(0); motorSD.setPower(x);
@@ -76,7 +74,7 @@ public class RobotHardware extends LinearOpMode {
         motorSS.setPower(y); motorSD.setPower(x);
     }
 
-    public void beyBlade(float x) {//spre dreapta
+    public void beyBlade(float x) {//rotire pe loc
         motorFS.setPower(x); motorFD.setPower(-x);
         motorSS.setPower(x); motorSD.setPower(-x);
     }
@@ -104,7 +102,7 @@ public class RobotHardware extends LinearOpMode {
 
 
 
-    public void gata() {
+    public void frana() {
         motorFS.setPower(0); motorFD.setPower(0);
         motorSS.setPower(0); motorSD.setPower(0);
     }
@@ -148,18 +146,15 @@ public class RobotHardware extends LinearOpMode {
         return powerNow;
     }
 
-    public void motorsTelemetry(Telemetry telemetrie) {
-
+    public void motorsTelemetry(Telemetry telemetrie) {//afiseaza puterea motoarelor
         telemetrie.addLine("FD: " + (motorFD.getPower()));
         telemetrie.addLine("FS: " + (motorFS.getPower()));
         telemetrie.addLine("SS: " + (motorSS.getPower()));
         telemetrie.addLine("SD: " + (motorSD.getPower()));
-        telemetrie.update();
 
+        telemetrie.addLine();
     }
 
     @Override
-    public void runOpMode() throws InterruptedException {
-
-    }
+    public void runOpMode() throws InterruptedException {}
 }
