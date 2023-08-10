@@ -13,10 +13,6 @@ public class PleacaCodu extends RobotHardware{
 
         telemetry.addLine("Dai drumu"); telemetry.update();
 
-        ElapsedTime runtime = new ElapsedTime();
-
-        boolean omni = false;
-
         waitForStart();
 
         while (opModeIsActive()) {
@@ -31,21 +27,14 @@ public class PleacaCodu extends RobotHardware{
                 continue;
             }
 
-            if (gamepad1.right_stick_button && runtime.milliseconds() >= 0.2) {//asteapta 0.2 secunde intre schimbari
-                omni = !omni;
-                runtime.reset();
-            }
-
-            if(omni) {
-                omniDirectionalMove();
+            if(straightMove())
                 continue;
-            }
 
-            straightMove();
+            omniMovevement();
         }
     }
 
-    void omniDirectionalMove(){
+    private void omniMovevement(){
         float y;
         float x;
         float fd, fs, sd, ss;
@@ -55,11 +44,6 @@ public class PleacaCodu extends RobotHardware{
 
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
-
-        telemetry.addLine(fs + " " + fd + '\n' +
-                                   ss + " " + sd);
-
-        telemetry.update();
 
         //max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
         //max = Math.max(max, Math.abs(leftBackPower));
@@ -77,7 +61,7 @@ public class PleacaCodu extends RobotHardware{
     }
 
 
-    void straightMove() {
+    private boolean straightMove() {
         //Navigation mode
         float y = 0;
         float x = 0;
@@ -98,8 +82,12 @@ public class PleacaCodu extends RobotHardware{
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
 
+        if(fs == 0 && fd == 0 && ss == 0 && sd == 0)
+            return false;
 
         motorFS.setPower(fs);  motorFD.setPower(fd);
         motorSS.setPower(ss);  motorSD.setPower(sd);
+
+        return true;
     }
 }
