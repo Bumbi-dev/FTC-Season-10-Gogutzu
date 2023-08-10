@@ -19,8 +19,6 @@ public class PleacaCodu extends RobotHardware{
             if(gamepad1.left_bumper || gamepad1.right_bumper)
                 return;
 
-            motorsTelemetry(telemetry);
-
 
             if(gamepad1.right_stick_button) {
                 omniDirectionalMove();
@@ -33,40 +31,36 @@ public class PleacaCodu extends RobotHardware{
     }
 
     void straightMove() {
+        //Rotation mode
+        float rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
 
+        if(rotatie != 0) {
+            beyBlade(rotatie);
+            return;
+        }
         //Navigation mode
         float y = 0;
         float x = 0;
         float fd, fs, sd, ss;
 
         if(gamepad1.dpad_up)
-            y = 0.5f;
+            y = 1;
 
         if(gamepad1.dpad_down)
-            y -= 0.5f;
+            y -= 1;
 
         if(gamepad1.dpad_right)
-            x = 0.5f;
+            x = 1;
 
         if(gamepad1.dpad_left)
-            x -= 0.5f;
+            x -= 1;
 
-        fs = y; fd = y;
-        ss = y; sd = y;
-
-        fs += x; fd -= x;
-        ss -= x; sd += x;
+        fs = y + x; fd = y - x;// ar trebui injumatatite diagonalele cand merge pe diagonala
+        ss = y - x; sd = y + x;
 
 
         motorFS.setPower(fs);  motorFD.setPower(fd);
         motorSS.setPower(ss);  motorSD.setPower(sd);
-
-
-        //Rotation mode
-        float rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
-
-        if(rotatie != 0)
-            beyBlade(rotatie / 2);
     }
 
     void omniDirectionalMove(){
