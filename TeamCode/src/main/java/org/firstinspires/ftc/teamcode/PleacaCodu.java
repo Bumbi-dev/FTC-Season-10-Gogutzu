@@ -72,8 +72,8 @@ public class PleacaCodu extends RobotHardware{
         //    rightBackPower  /= max;
         //}
 
-        //motorFS.setPower(fs);  motorFD.setPower(fd);
-        //motorSS.setPower(ss);  motorSD.setPower(sd);
+        motorFS.setPower(fs);  motorFD.setPower(fd);
+        motorSS.setPower(ss);  motorSD.setPower(sd);
     }
 
 
