@@ -72,7 +72,8 @@ public class RobotHardware extends LinearOpMode {
     }
 
     public void moveDiagonal(float x, float y) {
-
+        motorFS.setPower(x); motorFD.setPower(y);
+        motorSS.setPower(y); motorSD.setPower(x);
     }
 
     public void beyBlade(float x) {//spre dreapta
@@ -101,10 +102,7 @@ public class RobotHardware extends LinearOpMode {
         }
     }
 
-    @Override
-    public void runOpMode() throws InterruptedException {
 
-    }
 
     public void gata() {
         motorFS.setPower(0); motorFD.setPower(0);
@@ -157,6 +155,11 @@ public class RobotHardware extends LinearOpMode {
         telemetrie.addLine("SS: " + (motorSS.getPower()));
         telemetrie.addLine("SD: " + (motorSD.getPower()));
         telemetrie.update();
+
+    }
+
+    @Override
+    public void runOpMode() throws InterruptedException {
 
     }
 }
