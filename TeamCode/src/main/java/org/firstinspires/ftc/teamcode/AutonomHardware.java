@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -17,17 +20,25 @@ public class AutonomHardware extends LinearOpMode {
     public DcMotor motorSS = null;
     public DcMotor motorSD = null;
 
-    public DcMotor[] motoare = {motorFS, motorFD, motorSS, motorSD};
+    public DcMotor[] motoare =new DcMotor[4];
+
+    public BHI260IMU imu = null;
     HardwareMap hwMap = null;
 
     public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
 
         hwMap = ahwMap;
 
+        /*________________________Motoare____________________________*/
         motorFS = hwMap.get(DcMotor.class, "motor FataStanga");
         motorFD = hwMap.get(DcMotor.class, "motor FataDreapta");
         motorSS = hwMap.get(DcMotor.class, "motor SpateStanga");
         motorSD = hwMap.get(DcMotor.class, "motor SpateDreapta");
+
+        motoare[0] = motorFD;
+        motoare[1] = motorFS;
+        motoare[2] = motorSS;
+        motoare[3] = motorSD;
 
         motorFS.setDirection(DcMotor.Direction.REVERSE);
         motorFD.setDirection(DcMotor.Direction.FORWARD);
@@ -45,7 +56,13 @@ public class AutonomHardware extends LinearOpMode {
 
         frana();
 
+        //____________________Senzori_____________________*/
+        imu = hwMap.get(BHI260IMU.class, "imu");
+    }
 
+    public void frana() {
+        motorFS.setPower(0); motorFD.setPower(0);
+        motorSS.setPower(0); motorSD.setPower(0);
     }
 
     public void moveStraight(float x) {
@@ -99,14 +116,6 @@ public class AutonomHardware extends LinearOpMode {
             motorSS.setPower(0); motorSD.setPower(0);
         }
     }
-
-
-
-    public void frana() {
-        motorFS.setPower(0); motorFD.setPower(0);
-        motorSS.setPower(0); motorSD.setPower(0);
-    }
-
 
     //incercare si fara acceleratie poate merge mai bine
     float acceleratie(float powerAux, String motor) {
