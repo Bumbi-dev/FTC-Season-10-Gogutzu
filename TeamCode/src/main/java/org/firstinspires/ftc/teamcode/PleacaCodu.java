@@ -16,7 +16,7 @@ public class PleacaCodu extends RobotHardware{
         waitForStart();
 
         while (opModeIsActive()) {
-            if(gamepad1.left_bumper || gamepad1.right_bumper)
+            if(gamepad1.start)
                 return;
 
             //Rotation

@@ -1,13 +1,24 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name="...", group="Bubu")
 public class Autonomie_preload extends AutonomHardware {
 
-    float nr;
+    float nr, viteza = 0.2f;
+
+    Orientation angles;
 
     @Override
     public void runOpMode() {
@@ -15,20 +26,46 @@ public class Autonomie_preload extends AutonomHardware {
 
         init(hardwareMap);
 
-        telemetry.addLine(motorFS.getCurrentPosition() + " " + motorFD.getCurrentPosition() + "\n" + motorSS.getCurrentPosition() + " " + motorSD.getCurrentPosition());
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
+
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+
+        BHI260IMU.Parameters parameters = new BHI260IMU.Parameters(orientationOnRobot);
+
+        imu.initialize(parameters);
+
+        angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        telemetry.addData("Heading: ", angles.firstAngle);
+
+        telemetry.addLine('\n' + motorFS.getCurrentPosition() + " " + motorFD.getCurrentPosition() + "\n" + motorSS.getCurrentPosition() + " " + motorSD.getCurrentPosition());
+
+        telemetry.update();
 
         waitForStart();
 
+        ElapsedTime runtime = new ElapsedTime();
+
         while (opModeIsActive()) {
 
-            startThread();
+            if(gamepad1.dpad_up && runtime.milliseconds() >= 200) {
+                viteza += 0.1;
+                runtime.reset();
+            }
 
-            if(gamepad1.right_bumper || gamepad1.left_bumper)
+            if(gamepad1.dpad_down && runtime.milliseconds() >= 200) {
+                viteza -= 0.1;
+                runtime.reset();
+            }
+
+            if(gamepad1.start)
                 return;
 
             nr -= gamepad1.left_stick_y / 100;
 
-            telemetry.addLine(nr + "");
+            telemetry.addLine("Position: " + nr + '\n' +
+                                "Viteza: " + viteza);
             telemetry.update();
 
             if(gamepad1.a)
@@ -39,48 +76,45 @@ public class Autonomie_preload extends AutonomHardware {
 
             if(gamepad1.y)
                 goTo(0);
+            
+            if(gamepad1.x)
+                square(viteza);
         }
     }
 
-    public void goTo(int x) {
+    public void goTo(int x) {//fata spate
         for(DcMotor motor : motoare)
             motor.setTargetPosition(x);
 
         for(DcMotor motor : motoare)
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        moveStraight(0.3f);
+        moveStraight(viteza);
 
         while(motoare[1].getCurrentPosition() != x && opModeIsActive()) {//inlocuire cu atTargetPosition pt mai multa acuratete dar mai putina viteza
-            sleep(20);
+            sleep(5);
         }
 
         frana();
     }
 
-    public void strafeTo(int x) {
-        x = -x;//pt daca ii cu plus merge spre dreapta ca intro axa xOy
+    public void strafeTo(int x) {//se deplaseaza lateral
+        x = -x;//daca ii cu plus merge spre dreapta ca intro axa xOy
 
         for (DcMotor motor : motoare) {
             motor.setTargetPosition(x);
             x = -x;
         }
 
-        telemetry.addLine("se duce sanki");
-        telemetry.update();
-
-        moveStraight(0.3f);
+        moveStraight(viteza);
 
         for(DcMotor motor : motoare)
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while(!atTargetPosition(x) && opModeIsActive()) {
-            for(DcMotor motor : motoare)
-                telemetry.addLine(motor.getCurrentPosition() + " " + motor.getTargetPosition());
-            telemetry.update();
+            sleep(5);
         }
 
-        telemetry.addLine("gata"); telemetry.update();
         frana();
     }
 
@@ -92,22 +126,51 @@ public class Autonomie_preload extends AutonomHardware {
             x = -x;
         }
 
-        telemetry.addLine("aAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n\nagsdfasdf\bb\basdfa");
         return true;
     }
 
-    public void toTargetPosition() {
-        //sa duc un motor sau pe toate la pozitiile cerute
+    public void toTargetPosition(int x, int y) {
+
     }
 
-    public void startThread() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+    public void square(float x) {
 
-            }
-        });
+        telemetry.addLine("Patratele");
+        telemetry.update();
+        while(opModeIsActive()) {
+            goTo(2000);
 
-        thread.start();
+            for(DcMotor motor : motoare)
+                motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            if(gamepad1.right_bumper && gamepad1.left_bumper)
+                break;
+
+            strafeTo(1200);
+
+            for(DcMotor motor : motoare)
+                motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            if(gamepad1.right_bumper && gamepad1.left_bumper)
+                break;
+
+            goTo(-2000);
+
+            for(DcMotor motor : motoare)
+                motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            if(gamepad1.right_bumper && gamepad1.left_bumper)
+                break;
+
+            strafeTo(-1200);
+
+            for(DcMotor motor : motoare)
+                motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            if(gamepad1.right_bumper && gamepad1.left_bumper)
+                break;
+        }
+        telemetry.addLine("gata");
+        telemetry.update();
     }
 }
