@@ -78,7 +78,7 @@ public class Autonomie_preload extends AutonomHardware {
                 goTo(0);
             
             if(gamepad1.x)
-                square(viteza);
+                square();
         }
     }
 
@@ -90,9 +90,12 @@ public class Autonomie_preload extends AutonomHardware {
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         moveStraight(viteza);
+        if(motorFD.getTargetPosition() - motorFD.getCurrentPosition() <= 200) {//poate ar trb verificate toate motoarele
+            moveStraight(viteza / 2);
+        }
 
         while(motoare[1].getCurrentPosition() != x && opModeIsActive()) {//inlocuire cu atTargetPosition pt mai multa acuratete dar mai putina viteza
-            sleep(5);
+            sleep(1);//poate ii mai precis cu val mica
         }
 
         frana();
@@ -106,13 +109,17 @@ public class Autonomie_preload extends AutonomHardware {
             x = -x;
         }
 
+
         moveStraight(viteza);
+        if(motorFD.getTargetPosition() - motorFD.getCurrentPosition() <= 200) {//poate ar trb verificate toate motoarele
+            moveStraight(viteza / 2);
+        }
 
         for(DcMotor motor : motoare)
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while(!atTargetPosition(x) && opModeIsActive()) {
-            sleep(5);
+            sleep(1); //poate ii mai precis cu val mica
         }
 
         frana();
@@ -133,10 +140,11 @@ public class Autonomie_preload extends AutonomHardware {
 
     }
 
-    public void square(float x) {
+    public void square() {
 
         telemetry.addLine("Patratele");
         telemetry.update();
+
         while(opModeIsActive()) {
             goTo(2000);
 
