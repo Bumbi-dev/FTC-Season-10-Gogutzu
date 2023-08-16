@@ -38,12 +38,22 @@ public class PleacaCodu extends RobotHardware{
         float y;
         float x;
         float fd, fs, sd, ss;
+        float rotatie;
 
+        rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
         y = -gamepad1.left_stick_y;
         x = gamepad1.left_stick_x;
 
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
+
+        if(rotatie > 0) {
+            fs += rotatie;
+            ss += rotatie;
+        } else if(rotatie < 0) {
+            fd -= rotatie;
+            sd -= rotatie;
+        }
 
         //max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
         //max = Math.max(max, Math.abs(leftBackPower));
