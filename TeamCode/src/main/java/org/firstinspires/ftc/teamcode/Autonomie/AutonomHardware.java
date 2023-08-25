@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Autonomie;
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -117,43 +117,7 @@ public class AutonomHardware extends LinearOpMode {
         }
     }
 
-    //incercare si fara acceleratie poate merge mai bine
-    float acceleratie(float powerAux, String motor) {
-        //powerNow se apropie de powerAux
 
-        float powerNow;
-
-        switch (motor){
-            case "FS":
-                powerNow = (float) motorFS.getPower();
-                break;
-            case "SD":
-                powerNow = (float) motorSD.getPower();
-                break;
-            case "SS":
-                powerNow = (float) motorSS.getPower();
-                break;
-
-            default:
-                powerNow = (float) motorFD.getPower();
-                break;
-        }
-
-        float varAcc = 25;//daca e 1, nu mai avem acceleratie
-
-        if(powerNow == powerAux)
-            return powerNow;
-
-        if(powerNow < -0.25 || powerNow > 0.25)
-            return powerAux;
-
-        if(powerNow < powerAux)
-            powerNow += (powerAux - powerNow) / varAcc;
-        else
-            powerNow -= (powerAux - powerNow) / varAcc;
-
-        return powerNow;
-    }
 
     public void motorsTelemetry(Telemetry telemetrie) {//afiseaza puterea motoarelor
         telemetrie.addLine("FD: " + (motorFD.getPower()));
