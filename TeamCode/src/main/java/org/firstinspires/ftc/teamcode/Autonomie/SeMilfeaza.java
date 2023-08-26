@@ -1,21 +1,12 @@
 package org.firstinspires.ftc.teamcode.Autonomie;
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.Autonomie.AutonomHardware;
 
 import java.io.File;
 
-@Autonomous(name="...", group="Bubu")
+@Autonomous(name="Milfeaza", group="Bubu")
 public class SeMilfeaza extends AutonomHardware {
 
     File movement = new File("/storage/emulated/0/FORST/movement");
@@ -25,10 +16,52 @@ public class SeMilfeaza extends AutonomHardware {
     public void runOpMode() {
         init(hardwareMap);
 
+        String prev = "0";
+        String current;
+
         waitForStart();
+
+        boolean []directii = {gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left};
+        String []numeDirectii = {"sus", "jos", "dreapta", "stanga"};
 
         while (opModeIsActive()) {
 
+            current = "0";
+
+            for (int i = 0; i < directii.length; i++)//gets the actual direction
+                if(directii[i]) {
+                    current = numeDirectii[i];
+                    break;
+                }
+
+            switch (current) {
+                case "sus":
+                    moveStraight(0.3f);
+                    break;
+
+                case "jos":
+                    moveStraight(-0.3f);
+                    break;
+
+                case "dreapta":
+                    moveStrafe(0.3f);
+                    break;
+
+                case "stanga":
+                    moveStrafe(-0.3f);
+                    break;
+
+                case "0" :
+                    frana();
+                    if(!prev.equals("0"))
+                        savePosition();
+                    break;
+
+                default:
+                    return;
+            }
+
+            prev = current;
         }
 
         ReadWriteFile.writeFile(movement, data);
@@ -37,4 +70,6 @@ public class SeMilfeaza extends AutonomHardware {
     private void savePosition () {
         //save all motors positions maybe
     }
+
+
 }

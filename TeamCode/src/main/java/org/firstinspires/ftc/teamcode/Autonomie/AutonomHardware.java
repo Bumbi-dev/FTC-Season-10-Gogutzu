@@ -20,7 +20,7 @@ public class AutonomHardware extends LinearOpMode {
     public DcMotor motorSS = null;
     public DcMotor motorSD = null;
 
-    public DcMotor[] motoare =new DcMotor[4];
+    public DcMotor[] motoare = new DcMotor[4];
 
     public BHI260IMU imu = null;
     HardwareMap hwMap = null;
@@ -35,10 +35,7 @@ public class AutonomHardware extends LinearOpMode {
         motorSS = hwMap.get(DcMotor.class, "motor SpateStanga");
         motorSD = hwMap.get(DcMotor.class, "motor SpateDreapta");
 
-        motoare[0] = motorFD;
-        motoare[1] = motorFS;
-        motoare[2] = motorSS;
-        motoare[3] = motorSD;
+        motoare = new DcMotor[]{motorFS, motorFD, motorSS, motorSD};
 
         motorFS.setDirection(DcMotor.Direction.REVERSE);
         motorFD.setDirection(DcMotor.Direction.FORWARD);
