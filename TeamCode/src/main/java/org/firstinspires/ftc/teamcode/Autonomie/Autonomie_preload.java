@@ -89,18 +89,18 @@ public class Autonomie_preload extends AutonomHardware {
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         moveStraight(viteza);
-        if(motorFD.getTargetPosition() - motorFD.getCurrentPosition() <= 200) {//poate ar trb verificate toate motoarele
+        if(motorFD.getTargetPosition() - motorFD.getCurrentPosition() <= 200) //poate ar trb verificate toate motoarele
             moveStraight(viteza / 2);
-        }
 
-        while(motoare[1].getCurrentPosition() != x && opModeIsActive()) {//inlocuire cu atTargetPosition pt mai multa acuratete dar mai putina viteza
+
+        while(motoare[1].getCurrentPosition() != x && opModeIsActive()) //inlocuire cu atTargetPosition pt mai multa acuratete dar mai putina viteza
             sleep(1);//poate ii mai precis cu val mica
-        }
+
 
         frana();
     }
 
-    public void strafeTo(int x) {//se deplaseaza lateral
+    public void strafeTo(int x) { //se deplaseaza lateral
         x = -x;//daca ii cu plus merge spre dreapta ca intro axa xOy
 
         for (DcMotor motor : motoare) {
@@ -110,25 +110,24 @@ public class Autonomie_preload extends AutonomHardware {
 
 
         moveStraight(viteza);
-        if(motorFD.getTargetPosition() - motorFD.getCurrentPosition() <= 200) {//poate ar trb verificate toate motoarele
+        if(motorFD.getTargetPosition() - motorFD.getCurrentPosition() <= 200) //poate ar trb verificate toate motoarele
             moveStraight(viteza / 2);
-        }
+
 
         for(DcMotor motor : motoare)
             motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while(!atTargetPosition(x) && opModeIsActive()) {
+        while(!atTargetPosition(x) && opModeIsActive())
             sleep(1); //poate ii mai precis cu val mica
-        }
 
         frana();
     }
 
     private boolean atTargetPosition(int x) {
         for(DcMotor motor : motoare) {
-            if (Math.abs(motor.getCurrentPosition() - x) > 2) {//valoare mai mare pt marja de eroare
+            if (Math.abs(motor.getCurrentPosition() - x) > 2) //valoare mai mare pt marja de eroare
                 return false;
-            }
+
             x = -x;
         }
 

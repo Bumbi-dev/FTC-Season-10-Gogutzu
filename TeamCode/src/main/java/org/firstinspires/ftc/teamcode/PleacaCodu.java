@@ -15,15 +15,14 @@ public class PleacaCodu extends RobotHardware{
 
         waitForStart();
 
+        telemetry.update();
+
         while (opModeIsActive()) {
             if(gamepad1.start)
                 return;
 
-            //Rotation
-            float rotatie = gamepad1.right_trigger - gamepad1.left_trigger;//in omni direction sa adauge putere pt pareta in care se roteste
-
-            if(rotatie != 0) {
-                beyBlade(rotatie);
+            if(gamepad1.a) {
+                frana();
                 continue;
             }
 
@@ -48,11 +47,11 @@ public class PleacaCodu extends RobotHardware{
         ss = y - x; sd = y + x;
 
         if(rotatie > 0) {
-            fs += rotatie;
-            ss += rotatie;
+            fs += rotatie;   fd -= rotatie;
+            ss += rotatie;   sd -= rotatie;
         } else if(rotatie < 0) {
-            fd -= rotatie;
-            sd -= rotatie;
+            fd -= rotatie;   fd += rotatie;
+            sd -= rotatie;   sd += rotatie;
         }
 
         //max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));

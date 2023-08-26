@@ -54,8 +54,8 @@ public class RobotHardware extends LinearOpMode {
     }
 
     public void moveStrafe(float x) {//miscare laterala
-        motorFS.setPower(-x); motorFD.setPower(x);
-        motorSS.setPower(x); motorSD.setPower(-x);
+        motorFS.setPower(x); motorFD.setPower(-x);
+        motorSS.setPower(-x); motorSD.setPower(x);
     }
 
     public void moveDiagonal(float x, String way) {//miscare pe diagonala

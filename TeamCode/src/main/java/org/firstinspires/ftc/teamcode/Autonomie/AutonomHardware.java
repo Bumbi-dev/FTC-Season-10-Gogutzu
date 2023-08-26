@@ -46,7 +46,7 @@ public class AutonomHardware extends LinearOpMode {
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         for(DcMotor motor : motoare)
-            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         for(DcMotor motor : motoare)
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -68,8 +68,8 @@ public class AutonomHardware extends LinearOpMode {
     }
 
     public void moveStrafe(float x) {//miscare laterala
-        motorFS.setPower(-x); motorFD.setPower(x);
-        motorSS.setPower(x); motorSD.setPower(-x);
+        motorFS.setPower(x); motorFD.setPower(-x);
+        motorSS.setPower(-x); motorSD.setPower(x);
     }
 
     public void moveDiagonal(float x, String way) {//miscare pe diagonala
@@ -116,11 +116,20 @@ public class AutonomHardware extends LinearOpMode {
 
 
 
-    public void motorsTelemetry(Telemetry telemetrie) {//afiseaza puterea motoarelor
-        telemetrie.addLine("FD: " + (motorFD.getPower()));
-        telemetrie.addLine("FS: " + (motorFS.getPower()));
-        telemetrie.addLine("SS: " + (motorSS.getPower()));
-        telemetrie.addLine("SD: " + (motorSD.getPower()));
+    public void motorsPowerTelemetry(Telemetry telemetrie) {//afiseaza puterea motoarelor
+        telemetrie.addLine("FD: " + motorFD.getPower());
+        telemetrie.addLine("FS: " + motorFS.getPower());
+        telemetrie.addLine("SS: " + motorSS.getPower());
+        telemetrie.addLine("SD: " + motorSD.getPower());
+
+        telemetrie.addLine();
+    }
+
+    public void motorsPositionTelemetry(Telemetry telemetrie) {//afiseaza puterea motoarelor
+        telemetrie.addLine("FD: " + motorFD.getCurrentPosition());
+        telemetrie.addLine("FS: " + motorFS.getCurrentPosition());
+        telemetrie.addLine("SS: " + motorSS.getCurrentPosition());
+        telemetrie.addLine("SD: " + motorSD.getCurrentPosition());
 
         telemetrie.addLine();
     }
