@@ -15,16 +15,21 @@ public class RobotHardware extends LinearOpMode {
     public DcMotor motorSS = null;
     public DcMotor motorSD = null;
 
+    public DcMotor[] motoare = new DcMotor[4];
+
     HardwareMap hwMap = null;
 
     public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
 
         hwMap = ahwMap;
 
+        /*________________________Motoare Roti____________________________*/
         motorFS = hwMap.get(DcMotor.class, "motor FataStanga");
         motorFD = hwMap.get(DcMotor.class, "motor FataDreapta");
         motorSS = hwMap.get(DcMotor.class, "motor SpateStanga");
         motorSD = hwMap.get(DcMotor.class, "motor SpateDreapta");
+
+        motoare = new DcMotor[]{motorFS, motorFD, motorSS, motorSD};
 
         motorFS.setDirection(DcMotor.Direction.REVERSE);
         motorFD.setDirection(DcMotor.Direction.FORWARD);
@@ -33,20 +38,17 @@ public class RobotHardware extends LinearOpMode {
 
         frana();
 
-        motorFS.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorFD.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorSS.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        motorSD.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        for(DcMotor motor : motoare)
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motorFS.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorFD.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorSS.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motorSD.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        for(DcMotor motor : motoare)
+            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void moveStraight(float x) {
         /* pentru acceleratie:
            x = acceleratie(x, "FS");
+           sau pentru fiecare motor in parte motor_.setPower(acceleratie "_");
         */
 
         motorFS.setPower(x); motorFD.setPower(x);

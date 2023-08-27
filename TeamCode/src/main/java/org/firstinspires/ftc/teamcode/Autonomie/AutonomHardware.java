@@ -25,11 +25,13 @@ public class AutonomHardware extends LinearOpMode {
     public BHI260IMU imu = null;
     HardwareMap hwMap = null;
 
+    public final float standardSpeed = 0.3f;
+
     public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
 
         hwMap = ahwMap;
 
-        /*________________________Motoare____________________________*/
+        /*________________________Motoare Roti____________________________*/
         motorFS = hwMap.get(DcMotor.class, "motor FataStanga");
         motorFD = hwMap.get(DcMotor.class, "motor FataDreapta");
         motorSS = hwMap.get(DcMotor.class, "motor SpateStanga");

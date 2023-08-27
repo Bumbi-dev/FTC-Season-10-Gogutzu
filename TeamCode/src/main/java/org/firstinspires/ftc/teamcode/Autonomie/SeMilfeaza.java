@@ -6,17 +6,16 @@ import com.qualcomm.robotcore.util.ReadWriteFile;
 
 
 import java.io.File;
+import java.util.Arrays;
 
 @TeleOp(name="Milfeaza", group="Bursuc")
 public class SeMilfeaza extends AutonomHardware {
 
-    File movement = new File("/storage/emulated/0/FORST/movement");
+    File movement = new File("/storage/emulated/0/FIRST/movement");
     String data = "";
     String []numeDirectii = {"sus", "jos", "dreapta", "stanga"};
     String current;
 
-    final float standardSpeed = 0.3f;
-    
     @Override
     public void runOpMode() {
         init(hardwareMap);
@@ -34,8 +33,6 @@ public class SeMilfeaza extends AutonomHardware {
 
             getDirection();
 
-            telemetry.addLine(current);
-            telemetry.update();
 
             switch (current) {
                 case "sus":
@@ -62,31 +59,35 @@ public class SeMilfeaza extends AutonomHardware {
                     return;
             }
 
-            if(!prev.equals(current))
+            if(!prev.equals(current) && !prev.equals("0"))
                 savePosition();
 
+            telemetry.addLine(current);
+            telemetry.addLine(motorFS.getCurrentPosition() + " " +  motorFD.getCurrentPosition() + '\n'+
+                    motorSS.getCurrentPosition() + " " +  motorSD.getCurrentPosition());
+            telemetry.update();
+
             prev = current;
+
         }
 
         ReadWriteFile.writeFile(movement, data);
     }
 
-    private void savePosition () {
+    private void savePosition () {//saves the position of all motors
+         data += motorFS.getCurrentPosition() + " " +  motorFD.getCurrentPosition() + " \n"+
+                 motorSS.getCurrentPosition() + " " +  motorSD.getCurrentPosition() + " \n\n";
 
-        /*save all motors positions maybe
-         *data += FS  FD
-         *        SS  SD
-         *data += "\n\n";
-         */
     }
 
-    private void getDirection() {
+    private void getDirection() {//gets the direction determined by the dpad
         boolean []directii = {gamepad1.dpad_up, gamepad1.dpad_down, gamepad1.dpad_right, gamepad1.dpad_left};
 
-        for (int i = 0; i < directii.length; i++)//gets the actual direction
-            if(directii[i]) {
+        for (int i = 0; i < directii.length; i++) {
+            if (directii[i]) {
                 current = numeDirectii[i];
                 break;
             }
+        }
     }
 }

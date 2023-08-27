@@ -39,7 +39,7 @@ public class PleacaCodu extends RobotHardware{
         float fd, fs, sd, ss;
         float rotatie;
 
-        rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
+        rotatie = gamepad1.right_trigger - gamepad1.left_trigger;//NOT WORKING PROPERLY
         y = -gamepad1.left_stick_y;
         x = gamepad1.left_stick_x;
 
