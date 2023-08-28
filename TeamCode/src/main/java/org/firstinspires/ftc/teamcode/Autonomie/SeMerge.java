@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Autonomous(name="SeMerge", group="Bursuc")
-public class SeMerge extends AutonomHardware {
+public class SeMerge extends AutonomHardware {//se deplaseaza in functie de pozitiile din fisierul movement
 
     String movement = ReadWriteFile.readFile(new File("/storage/emulated/0/FIRST/movement"));
     Integer[] movementParts;
@@ -27,8 +27,7 @@ public class SeMerge extends AutonomHardware {
         splitPositions();
 
         while(opModeIsActive()) {
-            sleep(1000);
-            moveMotorsToPositions();
+            moveMotorsToPositions();//se misca fara delay la positiile dorite
         }
     }
 
@@ -44,36 +43,31 @@ public class SeMerge extends AutonomHardware {
             motor.setPower(standardSpeed);
 
         while(!areMotorsAtPosition() && opModeIsActive()) {
-            int x = 0;
-            for(DcMotor motor : motoare)
-                x += Math.abs(motor.getCurrentPosition() - motor.getTargetPosition());
-
-            telemetry.addLine();
-            telemetry.update();
-            
-            if(gamepad1.ps)
+            if(gamepad1.ps) {
+                frana();
                 stop();
+            }
         }
     }
 
-    private boolean areMotorsAtPosition() {
+    private boolean areMotorsAtPosition() {//verifica daca motoarele au ajuns
         for(DcMotor motor : motoare)
-            if(motor.getCurrentPosition() != motor.getTargetPosition())
+            if(Math.abs(motor.getCurrentPosition() - motor.getTargetPosition()) >= 4)
                 return false;
         return true;
     }
 
-    private int getNextPosition(DcMotor motor) {
+    private int getNextPosition(DcMotor motor) {//returneaza urmatoarea pozitie din vector
         if (currentIndex < movementParts.length) {
             int nextPosition = movementParts[currentIndex];
             currentIndex++;
             return nextPosition;
         } else {
-            return motor.getCurrentPosition(); // Return a default value when there are no more numbers
+            return motor.getCurrentPosition();//daca nu mai sunt pozitii returneaza valoarea motorului, ca sa stea pe loc
         }
     }
 
-    private void splitPositions() {
+    private void splitPositions() {//memoreaza in vector toate positiile pe rand
         String[] stringParts = movement.split("\\s+"); // Split by whitespace (including newlines)
         List<Integer> tempList = new ArrayList<>();
 

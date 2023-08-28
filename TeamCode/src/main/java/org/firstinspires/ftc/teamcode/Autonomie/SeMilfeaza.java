@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.Arrays;
 
 @TeleOp(name="Milfeaza", group="Bursuc")
-public class SeMilfeaza extends AutonomHardware {
+public class SeMilfeaza extends AutonomHardware {//inregistreaza pozitiile date de dpad si le scrie in fisierul movement
 
     File movement = new File("/storage/emulated/0/FIRST/movement");
     String data = "";

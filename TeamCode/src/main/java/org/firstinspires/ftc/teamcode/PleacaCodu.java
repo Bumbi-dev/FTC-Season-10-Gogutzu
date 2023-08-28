@@ -15,11 +15,11 @@ public class PleacaCodu extends RobotHardware{
 
         waitForStart();
 
-        telemetry.update();
+        telemetry.update();//nu se mai afiseaza dai drumu
 
         while (opModeIsActive()) {
-            if(gamepad1.start)
-                return;
+            if(gamepad1.start)//se opreste daca apesi pe start
+                requestOpModeStop();
 
             if(gamepad1.a) {
                 frana();
@@ -33,7 +33,7 @@ public class PleacaCodu extends RobotHardware{
         }
     }
 
-    private void omniMovevement(){
+    private void omniMovevement(){//miscare din joystick
         float y;
         float x;
         float fd, fs, sd, ss;
@@ -70,7 +70,7 @@ public class PleacaCodu extends RobotHardware{
     }
 
 
-    private boolean straightMove() {
+    private boolean straightMove() {//miscare din dpad
         //Navigation mode
         float y = 0;
         float x = 0;
@@ -91,7 +91,7 @@ public class PleacaCodu extends RobotHardware{
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
 
-        if(fs == 0 && fd == 0 && ss == 0 && sd == 0)
+        if(fs == 0 && fd == 0 && ss == 0 && sd == 0)//daca nu sa apasat nimic pe dpad returneaza fals
             return false;
 
         motorFS.setPower(fs);  motorFD.setPower(fd);

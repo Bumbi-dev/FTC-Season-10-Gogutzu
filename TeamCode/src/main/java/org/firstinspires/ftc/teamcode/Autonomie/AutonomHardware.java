@@ -59,12 +59,12 @@ public class AutonomHardware extends LinearOpMode {
         imu = hwMap.get(BHI260IMU.class, "imu");
     }
 
-    public void frana() {
+    public void frana() {//se opreste
         motorFS.setPower(0); motorFD.setPower(0);
         motorSS.setPower(0); motorSD.setPower(0);
     }
 
-    public void moveStraight(float x) {
+    public void moveStraight(float x) {//miscare fata spate
         motorFS.setPower(x); motorFD.setPower(x);
         motorSS.setPower(x); motorSD.setPower(x);
     }
@@ -85,7 +85,7 @@ public class AutonomHardware extends LinearOpMode {
         }
     }
 
-    public void moveDiagonal(float x, float y) {
+    public void moveDiagonal(float x, float y) {//se misca pe diagonala
         motorFS.setPower(x); motorFD.setPower(y);
         motorSS.setPower(y); motorSD.setPower(x);
     }
