@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "vruuuuum", group = "Bubu")
+@TeleOp(name = "GAMEPLAY", group = "Bubu")
 public class PleacaCodu extends RobotHardware{
 
     @Override
@@ -17,12 +17,30 @@ public class PleacaCodu extends RobotHardware{
 
         telemetry.update();//nu se mai afiseaza dai drumu
 
+        boolean dublu = false;
+
         while (opModeIsActive()) {
+            //Brat
+                motorBrat.setPower(gamepad2.right_trigger);
+
+            //Roti
+
             if(gamepad1.start)//se opreste daca apesi pe start
                 requestOpModeStop();
 
             if(gamepad1.a) {
                 frana();
+                continue;
+            }
+
+            if(gamepad1.left_bumper)
+                dublu = true;
+
+            if(gamepad1.right_bumper)
+                dublu = false;
+
+            if(dublu) {
+                doubleMovement();
                 continue;
             }
 
@@ -39,21 +57,17 @@ public class PleacaCodu extends RobotHardware{
         float fd, fs, sd, ss;
         float rotatie;
 
-        rotatie = gamepad1.right_trigger - gamepad1.left_trigger;//NOT WORKING PROPERLY
+        rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
         y = -gamepad1.left_stick_y;
         x = gamepad1.left_stick_x;
 
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
 
-        if(rotatie > 0) {
-            fs += rotatie;   fd -= rotatie;
-            ss += rotatie;   sd -= rotatie;
-        } else if(rotatie < 0) {
-            fd -= rotatie;   fd += rotatie;
-            sd -= rotatie;   sd += rotatie;
-        }
+        fs += rotatie;   fd -= rotatie;
+        ss += rotatie;   sd -= rotatie;
 
+        //vezi daca merge
         //max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
         //max = Math.max(max, Math.abs(leftBackPower));
         //max = Math.max(max, Math.abs(rightBackPower));
@@ -69,6 +83,10 @@ public class PleacaCodu extends RobotHardware{
         motorSS.setPower(ss);  motorSD.setPower(sd);
     }
 
+    private void doubleMovement() {
+        motorFS.setPower(gamepad1.left_stick_y); motorFD.setPower(gamepad1.right_stick_y);
+        motorSS.setPower(gamepad2.left_stick_y); motorSD.setPower(gamepad2.right_stick_y);
+    }
 
     private boolean straightMove() {//miscare din dpad
         //Navigation mode

@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name="SeMerge", group="Bursuc")
+@Autonomous(name="Play Recording", group="Bursuc")
 public class SeMerge extends AutonomHardware {//se deplaseaza in functie de pozitiile din fisierul movement
 
     String movement = ReadWriteFile.readFile(new File("/storage/emulated/0/FIRST/movement"));
@@ -26,13 +26,12 @@ public class SeMerge extends AutonomHardware {//se deplaseaza in functie de pozi
 
         splitPositions();
 
-        while(opModeIsActive()) {
+        while(opModeIsActive())
             moveMotorsToPositions();//se misca fara delay la positiile dorite
-        }
+
     }
 
     private void moveMotorsToPositions() {
-
         for(DcMotor motor : motoare)
             motor.setTargetPosition(getNextPosition(motor));
 
@@ -67,7 +66,7 @@ public class SeMerge extends AutonomHardware {//se deplaseaza in functie de pozi
         }
     }
 
-    private void splitPositions() {//memoreaza in vector toate positiile pe rand
+    private void splitPositions() {//memoreaza in vector toate pozitiile pe rand
         String[] stringParts = movement.split("\\s+"); // Split by whitespace (including newlines)
         List<Integer> tempList = new ArrayList<>();
 
@@ -76,5 +75,4 @@ public class SeMerge extends AutonomHardware {//se deplaseaza in functie de pozi
 
         movementParts = tempList.toArray(new Integer[0]);
     }
-
 }

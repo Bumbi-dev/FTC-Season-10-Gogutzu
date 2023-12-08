@@ -3,14 +3,9 @@ package org.firstinspires.ftc.teamcode.Autonomie;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import java.util.Base64;
-
 
 public class AutonomHardware extends LinearOpMode {
 

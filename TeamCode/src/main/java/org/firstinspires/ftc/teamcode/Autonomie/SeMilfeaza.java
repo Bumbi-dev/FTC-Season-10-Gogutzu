@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ReadWriteFile;
 import java.io.File;
 import java.util.Arrays;
 
-@TeleOp(name="Milfeaza", group="Bursuc")
+@TeleOp(name="Record", group="Bursuc")
 public class SeMilfeaza extends AutonomHardware {//inregistreaza pozitiile date de dpad si le scrie in fisierul movement
 
     File movement = new File("/storage/emulated/0/FIRST/movement");

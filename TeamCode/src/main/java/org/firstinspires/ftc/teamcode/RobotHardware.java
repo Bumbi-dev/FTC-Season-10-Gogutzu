@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,6 +16,7 @@ public class RobotHardware extends LinearOpMode {
     public DcMotor motorSS = null;
     public DcMotor motorSD = null;
 
+    public DcMotor motorBrat = null;
     public DcMotor[] motoare = new DcMotor[4];
 
     HardwareMap hwMap = null;
@@ -43,6 +45,14 @@ public class RobotHardware extends LinearOpMode {
 
         for(DcMotor motor : motoare)
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        /*________________________Motoare Brat____________________________*/
+        motorBrat = hwMap.get(DcMotor.class, "motor Brat");
+
+        motorBrat.setDirection(DcMotor.Direction.FORWARD);
+        motorBrat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void moveStraight(float x) {
