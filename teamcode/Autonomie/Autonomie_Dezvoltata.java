@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomie;
+package org.firstinspires.ftc;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 
 import java.io.File;
 
-@Autonomous(name="Eu am facut autonomia (play)", group="Bubu")
+@Autonomous(name="Eu am facut autonomia! (play)", group="Bubu")
 public class Autonomie_Dezvoltata extends AutonomHardware {
 
     int nrRoti = 0;
@@ -52,8 +52,6 @@ public class Autonomie_Dezvoltata extends AutonomHardware {
             }catch (Exception ignored){}
     }
 
-
-
     private void chooseDirection() {
         switch (direction) {
             case "f":
@@ -73,6 +71,18 @@ public class Autonomie_Dezvoltata extends AutonomHardware {
                 break;
             case "tr":
                 rotateRight();
+                break;
+            case "u"://up
+                liftArm();
+                break;
+            case "d"://down
+                lowerArm();
+                break;
+            case "g"://grab
+                closeClaw();
+                break;
+            case "dr"://drop
+                openClaw();
                 break;
             default:
                 frana();

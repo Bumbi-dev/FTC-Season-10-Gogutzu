@@ -1,12 +1,11 @@
-package org.firstinspires.ftc.teamcode.Autonomie;
+package org.firstinspires.ftc;
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class AutonomHardware extends LinearOpMode {
 
@@ -15,9 +14,13 @@ public class AutonomHardware extends LinearOpMode {
     public DcMotor motorFD = null;
     public DcMotor motorSS = null;
     public DcMotor motorSD = null;
-    public DcMotor motorBrat = null;
 
     public DcMotor[] motoare = new DcMotor[4];
+
+    public DcMotor motorBrat = null;
+
+    public Servo ghearaStanga = null;
+    public Servo ghearaDreapta = null;
 
     public BHI260IMU imu = null;
     HardwareMap hwMap = null;
@@ -54,7 +57,7 @@ public class AutonomHardware extends LinearOpMode {
         frana();
 
 
-        /*________________________Motor Brat____________________________*/
+        /*________________________Brat____________________________*/
         motorBrat = hwMap.get(DcMotor.class, "motor Brat");
 
         motorBrat.setDirection(DcMotor.Direction.FORWARD);
@@ -62,16 +65,28 @@ public class AutonomHardware extends LinearOpMode {
         motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        ghearaStanga = hwMap.get(Servo.class, "gheara Stanga");
+        ghearaDreapta = hwMap.get(Servo.class, "gheara Dreapta");
+
+        ghearaStanga.setDirection(Servo.Direction.FORWARD);
+        ghearaDreapta.setDirection(Servo.Direction.REVERSE);
+
+
         //____________________Senzori_____________________*/
         imu = hwMap.get(BHI260IMU.class, "imu");
 
-        boolean prevPressed = true;
+        boolean prevPressed = false;
 
+        //vezi daca isOpModeActive == true dupa init
         while(true) {
-            if(gamepad2.right_bumper)
-                nrAutonomie++;
-            if(gamepad2.left_bumper)
-                nrAutonomie--;
+            if(prevPressed) {
+                if (gamepad2.right_bumper)
+                    nrAutonomie++;
+                if (gamepad2.left_bumper)
+                    nrAutonomie--;
+            }
+            if(gamepad2.left_bumper || gamepad2.right_bumper)
+                prevPressed = true;
 
             telemetry.addLine(nrAutonomie + "");
             telemetry.update();
@@ -81,37 +96,52 @@ public class AutonomHardware extends LinearOpMode {
     public void frana() {//se opreste
         motorFS.setPower(0); motorFD.setPower(0);
         motorSS.setPower(0); motorSD.setPower(0);
+        motorBrat.setPower(0);
     }
 
     public void moveForward() {//miscare fata spate
         motorFS.setPower(standardSpeed); motorFD.setPower(standardSpeed);
         motorSS.setPower(standardSpeed); motorSD.setPower(standardSpeed);
     }
-
     public void moveBack() {//miscare fata spate
         motorFS.setPower(-standardSpeed); motorFD.setPower(-standardSpeed);
         motorSS.setPower(-standardSpeed); motorSD.setPower(-standardSpeed);
     }
-
     public void strafeLeft() {//miscare laterala
         motorFS.setPower(-standardSpeed); motorFD.setPower(standardSpeed);
         motorSS.setPower(standardSpeed); motorSD.setPower(-standardSpeed);
     }
-
     public void strafeRight() {//miscare laterala
         motorFS.setPower(standardSpeed); motorFD.setPower(-standardSpeed);
         motorSS.setPower(-standardSpeed); motorSD.setPower(standardSpeed);
     }
-
     public void rotateLeft() {//rotire pe loc
         motorFS.setPower(-standardSpeed); motorFD.setPower(standardSpeed);
         motorSS.setPower(-standardSpeed); motorSD.setPower(standardSpeed);
     }
-
     public void rotateRight() {//rotire pe loc
         motorFS.setPower(standardSpeed); motorFD.setPower(-standardSpeed);
         motorSS.setPower(standardSpeed); motorSD.setPower(-standardSpeed);
     }
+
+    //brat
+    public void liftArm() {
+        motorBrat.setPower(standardSpeed);
+    }
+    public void lowerArm() {
+        motorBrat.setPower(-standardSpeed);
+    }
+
+    public void closeClaw() {
+        ghearaStanga.setPosition(0);
+        ghearaDreapta.setPosition(0);
+    }
+    public void openClaw() {
+        ghearaDreapta.setPosition(0.25f);
+        ghearaStanga.setPosition(0.25f);
+    }
+
+
 
     //public void moveDiagonal(float x, String way) {//miscare pe diagonala
     //    if(way.equals("FD")) {//x = y

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomie;
+package org.firstinspires.ftc;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 
 import java.io.File;
 
-@Autonomous(name="Cine a facut autonomia! (record)", group="Bubu")
+@Autonomous(name="Cine a facut autonomia? (record)", group="Bubu")
 public class Autonomie_NeDezvoltata extends AutonomHardware {
     String direction = "0";
     String prevDirection = "0";
@@ -53,17 +53,33 @@ public class Autonomie_NeDezvoltata extends AutonomHardware {
 
         if(gamepad1.dpad_right){
             direction = "r";
-                return;
+            return;
         }
 
         if(gamepad1.left_bumper){
             direction = "tl";
-                return;
+            return;
         }
 
         if(gamepad1.right_bumper) {
             direction = "tr";
-                return;
+            return;
+        }
+        if(gamepad2.dpad_up) {
+            direction = "u";
+            return;
+        }
+        if(gamepad2.dpad_down) {
+            direction = "d";
+            return;
+        }
+        if(gamepad2.a) {
+            direction = "g";
+            return;
+        }
+        if(gamepad2.b) {
+            direction = "dr";
+            return;
         }
         direction = "0";
     }
@@ -97,16 +113,16 @@ public class Autonomie_NeDezvoltata extends AutonomHardware {
                 rotateRight();
                 break;
             case "u"://up
-                strafeLeft();
+                liftArm();
                 break;
             case "d"://down
-                strafeRight();
+                lowerArm();
                 break;
-            case "c"://close
-                rotateLeft();
+            case "g"://grab
+                closeClaw();
                 break;
-            case "o"://open
-                rotateRight();
+            case "dr"://drop
+                openClaw();
                 break;
             default:
                 frana();
