@@ -8,65 +8,52 @@ public class PleacaCodu extends RobotHardware{
 
     @Override
     public void runOpMode() {
-
         init(hardwareMap);
-
-        telemetry.addLine("Dai drumu"); telemetry.update();
 
         waitForStart();
 
-        telemetry.update();//nu se mai afiseaza dai drumu
-
-        boolean dublu = false;
-
         while (opModeIsActive()) {
-            //Brat
+            //Brat: left stick - brat motor,  a-inchide gheara,  b-deschide gheara,  ps-arunca avion,  ps+left+right bumper - cancel
             motorBrat.setPower(gamepad2.left_stick_y);
 
-            setServoPosition(gamepad2.right_stick_y);
+            if(gamepad2.right_stick_y > 0.1)
+                setServoPosition((float) ((ghearaStanga.getPosition() + ghearaDreapta.getPosition())/2.0) + gamepad2.right_stick_y / 10);
 
-            telemetry.addLine(ghearaDreapta.getPosition() + "");
-            telemetry.addLine(ghearaStanga.getPosition() + "");
-            telemetry.update();
+            if(gamepad2.a)//prinde
+                setServoPosition(0);
+            if(gamepad2.b)//drop
+                setServoPosition(0.25f);
 
 
-            //Roti
-            if(gamepad2.ps)//se opreste daca apesi pe start
-                requestOpModeStop();
+            /*_____  9/11  _____*/
+            if(gamepad2.ps)
+                diana.setPosition(1);
 
+            //cancel 9/11
+            if(gamepad2.left_bumper && gamepad2.right_bumper && gamepad2.ps)
+                diana.setPosition(0.5);
+
+            //Roti: a-frana    dpad-miscari drepte,     rt/lt - fata spate, left stick - rotatie,  right stick - strafe
             if(gamepad1.a) {
                 frana();
-                continue;
-            }
-
-            //caterinca
-            if(gamepad1.left_bumper)
-                dublu = true;
-
-            if(gamepad1.right_bumper)
-                dublu = false;
-            //
-
-            if(dublu) {
-                doubleMovement();
                 continue;
             }
 
             if(straightMove())
                 continue;
 
-            omniMovevement();
+            sergiuMovevement();
         }
     }
 
-    private void omniMovevement(){//miscare din joystick
+    private void sergiuMovevement(){//miscare din joystick
         float y;
         float x;
         float fd, fs, sd, ss;
         float rotatie;
 
-        rotatie = gamepad1.right_trigger - gamepad1.left_trigger;
-        y = -gamepad1.left_stick_y;
+        y = gamepad1.right_trigger - gamepad1.left_trigger;
+        rotatie = gamepad1.right_stick_x;
         x = gamepad1.left_stick_x;
 
         fs = y + x; fd = y - x;
@@ -89,12 +76,6 @@ public class PleacaCodu extends RobotHardware{
 
         motorFS.setPower(fs);  motorFD.setPower(fd);
         motorSS.setPower(ss);  motorSD.setPower(sd);
-    }
-
-    //caterinca
-    private void doubleMovement() {
-        motorFS.setPower(-gamepad1.left_stick_y); motorFD.setPower(-gamepad1.right_stick_y);
-        motorSS.setPower(-gamepad2.left_stick_y); motorSD.setPower(-gamepad2.right_stick_y);
     }
 
     private boolean straightMove() {//miscare din dpad

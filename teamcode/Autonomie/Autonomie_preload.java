@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomie;
+/*package org.firstinspires.ftc.teamcode.Autonomie;
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -10,7 +10,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.Autonomie.AutonomHardware;
 
 @Autonomous(name="...", group="Bubu")
 public class Autonomie_preload extends AutonomHardware {
@@ -75,7 +74,7 @@ public class Autonomie_preload extends AutonomHardware {
 
             if(gamepad1.y)
                 goTo(0);
-            
+
             if(gamepad1.x)
                 square();
         }
@@ -180,3 +179,4 @@ public class Autonomie_preload extends AutonomHardware {
         telemetry.update();
     }
 }
+*/

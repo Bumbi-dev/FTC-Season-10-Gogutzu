@@ -20,8 +20,7 @@ public class RobotHardware extends LinearOpMode {
     public DcMotor motorBrat = null;
     public Servo ghearaStanga = null;
     public Servo ghearaDreapta = null;
-    public double DROP = 0; //servo positions
-    public double CATCH = 0;
+    public Servo diana = null;
     HardwareMap hwMap = null;
 
     public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
@@ -62,6 +61,9 @@ public class RobotHardware extends LinearOpMode {
 
         ghearaStanga.setDirection(Servo.Direction.FORWARD);
         ghearaDreapta.setDirection(Servo.Direction.REVERSE);
+
+        diana = hwMap.get(Servo.class, "gheara Avion");
+        diana.setPosition(0.5f);
     }
 
 
