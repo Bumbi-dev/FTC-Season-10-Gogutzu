@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -15,17 +15,20 @@ public class RobotHardware extends LinearOpMode {
     public DcMotor motorFD = null;
     public DcMotor motorSS = null;
     public DcMotor motorSD = null;
-
-    public DcMotor motorBrat = null;
     public DcMotor[] motoare = new DcMotor[4];
 
+    public DcMotor motorBrat = null;
+    public Servo ghearaStanga = null;
+    public Servo ghearaDreapta = null;
+    public Servo diana = null;
+    public Servo capcana = null;
     HardwareMap hwMap = null;
 
     public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
 
         hwMap = ahwMap;
 
-        /*________________________Motoare Roti____________________________*/
+        /*________________________ Motoare Roti ____________________________*/
         motorFS = hwMap.get(DcMotor.class, "motor FataStanga");
         motorFD = hwMap.get(DcMotor.class, "motor FataDreapta");
         motorSS = hwMap.get(DcMotor.class, "motor SpateStanga");
@@ -33,10 +36,10 @@ public class RobotHardware extends LinearOpMode {
 
         motoare = new DcMotor[]{motorFS, motorFD, motorSS, motorSD};
 
-        motorFS.setDirection(DcMotor.Direction.REVERSE);
-        motorFD.setDirection(DcMotor.Direction.FORWARD);
-        motorSS.setDirection(DcMotor.Direction.REVERSE);
-        motorSD.setDirection(DcMotor.Direction.FORWARD);
+        motorFS.setDirection(DcMotor.Direction.FORWARD);
+        motorFD.setDirection(DcMotor.Direction.REVERSE);
+        motorSS.setDirection(DcMotor.Direction.FORWARD);
+        motorSD.setDirection(DcMotor.Direction.REVERSE);
 
         frana();
 
@@ -46,73 +49,40 @@ public class RobotHardware extends LinearOpMode {
         for(DcMotor motor : motoare)
             motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        /*________________________Motoare Brat____________________________*/
+        /*________________________ Brat ____________________________*/
         motorBrat = hwMap.get(DcMotor.class, "motor Brat");
 
         motorBrat.setDirection(DcMotor.Direction.FORWARD);
         motorBrat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        ghearaStanga = hwMap.get(Servo.class, "gheara Stanga");
+        ghearaDreapta = hwMap.get(Servo.class, "gheara Dreapta");
+
+        ghearaStanga.setDirection(Servo.Direction.FORWARD);
+        ghearaDreapta.setDirection(Servo.Direction.REVERSE);
+
+        diana = hwMap.get(Servo.class, "gheara Avion");
+        capcana = hwMap.get(Servo.class, "capcana");
+
+        diana.setPosition(0.3f);
+        closeCapcana();
     }
 
-    public void moveStraight(float x) {
-        /* pentru acceleratie:
-           x = acceleratie(x, "FS");
-           sau pentru fiecare motor in parte motor_.setPower(acceleratie "_");
-        */
-
-        motorFS.setPower(x); motorFD.setPower(x);
-        motorSS.setPower(x); motorSD.setPower(x);
+    public void openCapcana() {
+        capcana.setPosition(0);
     }
 
-    public void moveStrafe(float x) {//miscare laterala
-        motorFS.setPower(x); motorFD.setPower(-x);
-        motorSS.setPower(-x); motorSD.setPower(x);
+    public void closeCapcana() {
+        capcana.setPosition(0.374);
     }
 
-    public void moveDiagonal(float x, String way) {//miscare pe diagonala
-        if(way.equals("FD")) {//x = y
-            motorFS.setPower(x); motorFD.setPower(0);
-            motorSS.setPower(0); motorSD.setPower(x);
-        }
-        else {//x = -y
-            motorFS.setPower(0);  motorFD.setPower(x);
-            motorSS.setPower(x);  motorSD.setPower(0);
-        }
+    public void setServoPosition(float x) {
+        float diferenta = 0;
+        ghearaStanga.setPosition(x);
+        ghearaDreapta.setPosition(x + diferenta);
     }
-
-    public void moveDiagonal(float x, float y) {
-        motorFS.setPower(x); motorFD.setPower(y);
-        motorSS.setPower(y); motorSD.setPower(x);
-    }
-
-    public void beyBlade(float x) {//rotire pe loc
-        motorFS.setPower(x); motorFD.setPower(-x);
-        motorSS.setPower(x); motorSD.setPower(-x);
-    }
-
-    public void doDrift(float x, String way) {
-        if(way.equals("D")) {
-            motorFS.setPower(x); motorFD.setPower(0);
-            motorSS.setPower(x); motorSD.setPower(0);
-        }
-        else
-            motorFS.setPower(0); motorFD.setPower(x);
-            motorSS.setPower(0); motorSD.setPower(x);
-    }
-
-    public void doDrift2(float x, String way) {
-        if(way.equals("F")) {
-            motorFS.setPower(x); motorFD.setPower(-x);
-            motorSS.setPower(0); motorSD.setPower(0);
-        }
-        else{
-            motorFS.setPower(-x); motorFD.setPower(x);
-            motorSS.setPower(0); motorSD.setPower(0);
-        }
-    }
-
-
 
     public void frana() {
         motorFS.setPower(0); motorFD.setPower(0);
