@@ -1,12 +1,10 @@
-package org.firstinspires.ftc.teamcode.Autonomie;
+/*package org.firstinspires.ftc.teamcode.Autonomie;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
 
 import java.io.File;
-import java.util.Arrays;
 
 @TeleOp(name="Record", group="Bursuc")
 public class SeMilfeaza extends AutonomHardware {//inregistreaza pozitiile date de dpad si le scrie in fisierul movement
@@ -91,3 +89,4 @@ public class SeMilfeaza extends AutonomHardware {//inregistreaza pozitiile date 
         }
     }
 }
+ */

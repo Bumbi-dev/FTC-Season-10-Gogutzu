@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomie;
+/*package org.firstinspires.ftc.teamcode.Autonomie;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -76,3 +76,4 @@ public class SeMerge extends AutonomHardware {//se deplaseaza in functie de pozi
         movementParts = tempList.toArray(new Integer[0]);
     }
 }
+*/
