@@ -42,11 +42,10 @@ public class PleacaCodu extends RobotHardware{
             motorBrat.setPower(0.1);
         else
             motorBrat.setPower(gamepad2.left_stick_y);
-
     }
     private void moveServos() {
         if(Math.abs(gamepad2.right_stick_y) > 0.1)//move claw with right stick
-            setServoPosition((float) ((ghearaStanga.getPosition() + ghearaDreapta.getPosition())/2.0) + gamepad2.right_stick_y / 10);
+            setServoPosition((float) ((ghearaStanga.getPosition() + ghearaDreapta.getPosition())/2.0) + gamepad2.right_stick_y / 100);
 
         if(gamepad2.a)//prinde
             setServoPosition(0);
@@ -56,7 +55,7 @@ public class PleacaCodu extends RobotHardware{
         /*_____  9/11  _____*/
         if(gamepad2.ps)
             if(gamepad2.left_bumper && gamepad2.right_bumper)
-                diana.setPosition(0.5f);
+                diana.setPosition(1);
             else
                 openCapcana();
 

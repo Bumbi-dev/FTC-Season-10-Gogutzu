@@ -1,10 +1,9 @@
+autonomia pe red sa fie blue in oglinda
 
 
 
 
 
-
-//mod la caterinca
 boolean dublu = false;
 
 caterinca

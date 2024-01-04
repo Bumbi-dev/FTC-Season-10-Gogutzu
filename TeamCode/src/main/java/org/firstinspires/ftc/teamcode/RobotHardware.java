@@ -70,16 +70,12 @@ public class RobotHardware extends LinearOpMode {
         closeCapcana();
     }
 
-    public void openCapcana() {
-        capcana.setPosition(0);
-    }
+    public void openCapcana() {capcana.setPosition(0);}
 
-    public void closeCapcana() {
-        capcana.setPosition(0.374);
-    }
+    public void closeCapcana() {capcana.setPosition(0.374);}
 
     public void setServoPosition(float x) {
-        float diferenta = 0;
+        float diferenta = -0.01f;
         ghearaStanga.setPosition(x);
         ghearaDreapta.setPosition(x + diferenta);
     }

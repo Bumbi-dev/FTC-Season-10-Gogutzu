@@ -29,6 +29,8 @@ public class AutonomHardware extends OpMode {
     public Servo ghearaStanga = null;
     public Servo ghearaDreapta = null;
 
+    public Servo capcana = null;
+
     ElapsedTime runtime= new ElapsedTime();
     public BHI260IMU imu = null;
     HardwareMap hwMap = null;
@@ -78,6 +80,9 @@ public class AutonomHardware extends OpMode {
 
         frana();
         closeClaw();
+
+        capcana = hwMap.get(Servo.class, "capcana");
+        capcana.setPosition(0.374);
 
         //____________________Senzori_____________________*/
         imu = hwMap.get(BHI260IMU.class, "imu");

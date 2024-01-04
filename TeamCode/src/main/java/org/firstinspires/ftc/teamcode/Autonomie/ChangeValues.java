@@ -14,68 +14,92 @@ public class ChangeValues extends OpMode {
     int nrRoti = 0;
     double time;
     String direction;
-    String path = Constants.folder + "autonomie";
     File fila;
-    String[] filePaths;
+    String[] filePaths = new String[6];
     String[] partiRoti;
 
     @Override
     public void init() {
-
-
+        for(int i = 1; i <= 3; i++) {
+            filePaths[i - 1] = Constants.path + i + ".txt";
+            filePaths[i + 2] = Constants.path + i + "_red.txt";
+        }
     }
-
     @Override
-    public void start() {
+    public void start() {}
 
-    }
+    int i = 0;
+    char prevDir = '0';
 
     @Override
     public void loop() {
-        int i = 0;
-        char prevDir = '0';
-
-        while(fila == null) {
+        if(fila == null) {
             if(gamepad2.left_bumper && prevDir != 'l') {
                 i--;
                 if(i < 0)
-                    i = filePaths.length;
+                    i = filePaths.length - 1;
                 prevDir = 'l';
             }
 
             if(gamepad2.right_bumper && prevDir != 'r') {
                 i++;
-                if(i > filePaths.length + 1)
+                if(i > filePaths.length - 1)
                     i = 0;
                 prevDir = 'r';
             }
+
+            if(!gamepad2.left_bumper && !gamepad2.right_bumper)
+                prevDir = '0';
+
             telemetry.addLine(filePaths[i]);
             telemetry.update();
 
             if(gamepad2.start) {
-                path += filePaths[i] + ".txt";
-                fila = new File(path);
+                fila = new File(filePaths[i]);
                 String roti;
                 roti = ReadWriteFile.readFile(fila);
+                telemetry.addLine(roti);
+                telemetry.update();
                 partiRoti = roti.trim().split("\\s+");
 
-                nextVariables();
+                prevDir = '0';
+                //nextVariables();
             }
-            continue;
+            return;
         }
 
+        if(gamepad2.left_bumper && prevDir != 'l') {
+            prevVariables();
+            prevDir = 'l';
+        }
+        if(gamepad2.right_bumper && prevDir != 'r') {
+            nextVariables();
+            prevDir = 'r';
+        }
+        if(!gamepad2.left_bumper && !gamepad2.right_bumper)
+            prevDir = '0';
 
-        telemetry.addLine(direction + " " + time);
+        time += gamepad2.right_stick_y / 100;
+        time += gamepad2.left_stick_y / 1000;
 
+        partiRoti[nrRoti - 1] = String.valueOf(time);
 
+        telemetry.addLine(direction + '\n' + time);
 
-
-        if(gamepad2.ps)
+        if(gamepad2.ps) {
             ReadWriteFile.writeFile(fila, rezultat());
+            telemetry.addLine("gata");
+            telemetry.update();
+            requestOpModeStop();
+        }
     }
 
-    private void rezultat () {
-        //convert parti roit
+    private String rezultat() {
+        String ata = "";
+        for (String s : partiRoti)
+            ata += s + ' ';
+
+        return ata;
     }
     private void nextVariables() {
         direction = partiRoti[nrRoti++];
