@@ -1,41 +1,43 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 
+@Config
 @Autonomous
-public class Camera extends LinearOpMode {
+public class Camera extends RobotHardware {
 
+    public static int width = 300, leftX = 0, leftY = 0, middleX = 300, middleY = 0 , rightX = 702, rightY = 0;
     private CSVisionProcessor visionProcessor;
     private VisionPortal visionPortal;
 
     @Override
     public void runOpMode() {
 
-        visionProcessor = new CSVisionProcessor();//TODO
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
+        init(hardwareMap);
 
-        CSVisionProcessor.StartingPosition startingPos = CSVisionProcessor.StartingPosition.NONE;
+        visionProcessor = new CSVisionProcessor(width, leftX, leftY, middleX, middleY, rightX, rightY);//TODO
 
-        //waitForStart();
+        visionPortal = VisionPortal.easyCreateWithDefaults((yoyo), visionProcessor);
+
+        CSVisionProcessor.StartingPosition startingPos;
 
         while (!this.isStarted() && !this.isStopRequested()) {
+            telemetry.addLine(getRuntime() + " ");
             startingPos = visionProcessor.getStartingPosition();
-            telemetry.addData("Identified", visionProcessor.getStartingPosition());
+            telemetry.addData("Identified", startingPos);
             telemetry.update();
         }
 
         visionPortal.stopStreaming();
 
-        // run until the end of the match (driver presses STOP)
+
         while (opModeIsActive()) {
 
-            //use the value of startingPos to determine your location
-
         }
-
     }
 }
