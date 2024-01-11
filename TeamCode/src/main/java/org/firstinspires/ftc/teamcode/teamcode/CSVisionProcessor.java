@@ -22,7 +22,7 @@ public class CSVisionProcessor  extends BlocksOpModeCompanion implements VisionP
 
     private Rect rectRight;// = new Rect(300, 202, 80, 80);
 
-
+    public static double avgLeft, avgMiddle, avgRight;
 
     StartingPosition selection = StartingPosition.NONE;
 
@@ -30,6 +30,10 @@ public class CSVisionProcessor  extends BlocksOpModeCompanion implements VisionP
     Mat hsvMat = new Mat();
 
     private static CSVisionProcessor _csVision;
+
+    public CSVisionProcessor() {
+
+    }
 
     @ExportToBlocks(
             comment = "Custom CenterStage Vision Processor",
@@ -94,6 +98,10 @@ public class CSVisionProcessor  extends BlocksOpModeCompanion implements VisionP
         double satRectMiddle = getAvgSaturation(hsvMat, rectMiddle);
         double satRectRight = getAvgSaturation(hsvMat, rectRight);
 
+        avgLeft = getAvgSaturation(hsvMat, rectLeft);
+        avgMiddle = getAvgSaturation(hsvMat, rectMiddle);
+        avgRight = getAvgSaturation(hsvMat, rectRight);
+
         if ((satRectLeft > satRectMiddle) && (satRectLeft > satRectRight)) {
             selection = StartingPosition.LEFT;
 
@@ -103,7 +111,6 @@ public class CSVisionProcessor  extends BlocksOpModeCompanion implements VisionP
         }else if ((satRectRight > satRectMiddle) && (satRectRight > satRectLeft)){
             selection = StartingPosition.RIGHT;
         }else{
-
             selection = StartingPosition.NONE;
         }
 
