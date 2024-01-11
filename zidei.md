@@ -1,8 +1,9 @@
-de documentat codu maine
 
 
-Pentru autonomie, ca sa fie mai ascuns ca nu detectam nimica, sa ascund nr autonomiei in valorile senzorului imu
-de ex sa inceapa valoarea X cu 1. (X: 1,6205643) si in rest sa fie ok.
+
+
+
+
 
 
 
