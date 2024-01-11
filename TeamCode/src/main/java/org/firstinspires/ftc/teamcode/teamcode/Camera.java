@@ -11,7 +11,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous
 public class Camera extends RobotHardware {
 
-    public static int width = 300, leftX = 0, leftY = 0, middleX = 300, middleY = 0 , rightX = 702, rightY = 0;
+    public static int width = 80, leftX = 250, leftY = 150, middleX = 250, middleY = 250, rightX = 400, rightY = 250;
     private CSVisionProcessor visionProcessor;
     private VisionPortal visionPortal;
 
@@ -29,12 +29,15 @@ public class Camera extends RobotHardware {
         while (!this.isStarted() && !this.isStopRequested()) {
             telemetry.addLine(getRuntime() + " ");
             startingPos = visionProcessor.getStartingPosition();
+            telemetry.addLine(CSVisionProcessor.avgLeft + " ");
+            telemetry.addLine(CSVisionProcessor.avgMiddle + " ");
+            telemetry.addLine(CSVisionProcessor.avgRight + " ");
+
             telemetry.addData("Identified", startingPos);
             telemetry.update();
         }
 
         visionPortal.stopStreaming();
-
 
         while (opModeIsActive()) {
 
