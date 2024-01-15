@@ -13,6 +13,8 @@ public class Autonomie_In_Dezvoltare_Blue extends AutonomHardware {
     String roti = "";
     ElapsedTime runtime = new ElapsedTime();
     File fila;
+    int prevAuto = 0;
+    boolean write = false;
 
     @Override
     public void runOpMode() {
@@ -20,11 +22,14 @@ public class Autonomie_In_Dezvoltare_Blue extends AutonomHardware {
 
 
         while (!this.isStarted() && !this.isStopRequested()) {
-            if (gamepad2.right_bumper)
+            if (gamepad2.right_bumper && prevAuto != 1) {
                 nrAutonomie++;
-            if (gamepad2.left_bumper)
+                prevAuto = 1;
+            }
+            if (gamepad2.left_bumper && prevAuto != 2) {
                 nrAutonomie--;
-
+                prevAuto = 2;
+            }
             if (nrAutonomie > 3)
                 nrAutonomie = 1;
             if (nrAutonomie < 1)
@@ -42,7 +47,11 @@ public class Autonomie_In_Dezvoltare_Blue extends AutonomHardware {
         waitForStart();
         runtime.reset();
 
+        if(opModeIsActive())
+            write = true;
+
         while(opModeIsActive()){
+
             prevDirection = direction;
             getDirection();
             proceed();
@@ -57,9 +66,14 @@ public class Autonomie_In_Dezvoltare_Blue extends AutonomHardware {
                 telemetry.update();
             }
 
+            if(gamepad2.ps) {
+                write = false;
+                break;
+            }
         }
 
-        ReadWriteFile.writeFile(fila, roti);
+        if(write)
+            ReadWriteFile.writeFile(fila, roti);
     }
 
     private void getDirection() {
