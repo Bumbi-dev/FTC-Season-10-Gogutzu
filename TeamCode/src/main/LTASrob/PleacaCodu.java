@@ -41,13 +41,13 @@ public class PleacaCodu extends RobotHardware{
         if(gamepad2.x)
             sePrinde = false;
 
+        if(gamepad2.left_stick_y != 0.1)
+            motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         if (sePrinde)
             motorBrat.setPower(0.1);
         else
             motorBrat.setPower(gamepad2.left_stick_y);
-
-        if(gamepad2.left_stick_y != 0.1)
-            motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if(gamepad2.start) {
             motorBrat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -66,7 +66,7 @@ public class PleacaCodu extends RobotHardware{
         telemetry.update();
     }
     private void freeFall() {
-        if(gamepad2.y)
+        if(gamepad2.option)
             motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         else
             motorBrat.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

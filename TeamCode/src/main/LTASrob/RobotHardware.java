@@ -79,6 +79,7 @@ public class RobotHardware extends LinearOpMode {
 
     public void ArmToPosition(int position) {
         motorBrat.setTargetPosition(position);
+        motorBrat.setPower(0.5);
         motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 

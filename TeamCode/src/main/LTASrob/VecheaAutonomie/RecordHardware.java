@@ -96,13 +96,29 @@ public class RecordHardware extends LinearOpMode {
         motorBrat.setPower(-standardSpeed);
     }
 
-    public void closeClaw() {
-        ghearaStanga.setPosition(0);
-        ghearaDreapta.setPosition(0);
+    public enum ServoPositions {
+        OPEN,
+        CLOSE;
     }
-    public void openClaw() {
-        ghearaDreapta.setPosition(0.25f);
-        ghearaStanga.setPosition(0.25f);
+
+    public void setLeftServoPosition(ServoPositions servoPosition) {
+        float closePosition = 0;
+        float openPosition = 0.25f;
+
+        if(servoPosition == ServoPositions.CLOSE)
+            ghearaStanga.setPosition(closePosition);
+        if(servoPosition == ServoPositions.OPEN)
+            ghearaStanga.setPosition(openPosition);
+    }
+
+    public void setRightServoPosition(ServoPositions servoPosition) {
+        float closePosition = 0;
+        float openPosition = 0.25f;
+
+        if(servoPosition == ServoPositions.CLOSE)
+            ghearaDreapta.setPosition(closePosition);
+        if(servoPosition == ServoPositions.OPEN)
+            ghearaDreapta.setPosition(openPosition);
     }
 
     @Override

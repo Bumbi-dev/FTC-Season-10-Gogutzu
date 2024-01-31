@@ -8,9 +8,11 @@ import org.firstinspires.ftc.LTASrob.Constants;
 
 import java.io.File;
 
+//MODIFICI AUTONOMIA SI APESI PS CA SA SALVEZI CE AI SCHIMBAT
+
 @Autonomous(name="Eu am MODIFICAT autonomia", group="modify")
 public class ChangeValues extends LinearOpMode {
-    int nrRoti = 0;
+    int nrRoti = -1;
     double time;
     String direction;
     File fila;
@@ -58,7 +60,7 @@ public class ChangeValues extends LinearOpMode {
             telemetry.update();
         }
 
-        fila = new File(filePaths[i]);
+        fila = new File(filePaths[nrAutonomie + i - 1]);
         String roti;
         roti = ReadWriteFile.readFile(fila);
         telemetry.addLine(roti);
@@ -66,9 +68,11 @@ public class ChangeValues extends LinearOpMode {
         partiRoti = roti.trim().split("\\s+");
 
         prevDir = '0';
-        //nextVariables();
+        nextVariables();
 
         while(opModeIsActive()) {
+            telemetry.addLine(filePaths[nrAutonomie + i - 1]);
+
             if(gamepad2.left_bumper && prevDir != 'l') {
                 prevVariables();
                 prevDir = 'l';
@@ -85,7 +89,8 @@ public class ChangeValues extends LinearOpMode {
 
             partiRoti[nrRoti] = String.valueOf(time);
 
-            telemetry.addLine(direction + '\n' + time);
+            telemetry.addLine("Direction: " + direction);
+            telemetry.addLine("Time: " +  time);
             telemetry.update();
 
             if(gamepad2.ps) {
