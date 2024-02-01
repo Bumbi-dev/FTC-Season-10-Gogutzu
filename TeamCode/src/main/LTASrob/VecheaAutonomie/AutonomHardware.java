@@ -31,6 +31,11 @@ public class AutonomHardware extends LinearOpMode {
     public String path = Constants.path;
     public File fila;
 
+    enum ServoPositions {
+         CLOSE,
+         OPEN;
+    }
+
     public void init(HardwareMap hwMap) {
         /*________________________Motoare Roti____________________________*/
         motorFS = hwMap.get(DcMotor.class, "motor FataStanga");
@@ -69,7 +74,8 @@ public class AutonomHardware extends LinearOpMode {
         ghearaDreapta.setDirection(Servo.Direction.REVERSE);
 
         frana();
-        closeClaw();
+        setLeftServoPosition(ServoPositions.CLOSE);
+setRightServoPosition(ServoPositions.CLOSE);
 
         capcana = hwMap.get(Servo.class, "capcana");
         capcana.setPosition(0.374);
@@ -165,14 +171,24 @@ public class AutonomHardware extends LinearOpMode {
         motorBrat.setPower(-standardSpeed);
     }
 
-    public void closeClaw() {
-        ghearaStanga.setPosition(0);
-        ghearaDreapta.setPosition(0);
+       public void setLeftServoPosition(ServoPositions servoPosition) {
+        float closePosition = 0;
+        float openPosition = 0.25f;
+
+        if(servoPosition == ServoPositions.CLOSE)
+            ghearaStanga.setPosition(closePosition);
+        if(servoPosition == ServoPositions.OPEN)
+            ghearaStanga.setPosition(openPosition);
     }
 
-    public void openClaw() {
-        ghearaDreapta.setPosition(0.25f);
-        ghearaStanga.setPosition(0.25f);
+    public void setRightServoPosition(ServoPositions servoPosition) {
+        float closePosition = 0;
+        float openPosition = 0.25f;
+
+        if(servoPosition == ServoPositions.CLOSE)
+            ghearaDreapta.setPosition(closePosition);
+        if(servoPosition == ServoPositions.OPEN)
+            ghearaDreapta.setPosition(openPosition);
     }
 
     @Override
