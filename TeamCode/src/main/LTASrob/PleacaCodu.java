@@ -41,7 +41,7 @@ public class PleacaCodu extends RobotHardware{
         if(gamepad2.x)
             sePrinde = false;
 
-        if(gamepad2.left_stick_y != 0.1)
+        if(Math.abs(gamepad2.left_stick_y) > 0.1)
             motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if (sePrinde)
