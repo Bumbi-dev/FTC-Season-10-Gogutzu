@@ -11,20 +11,26 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class RobotHardware extends LinearOpMode {
 
     //F-fata, S-spate, D-dreapta, S-stanga
-    public DcMotor motorFS = null;
-    public DcMotor motorFD = null;
-    public DcMotor motorSS = null;
-    public DcMotor motorSD = null;
+    public DcMotor motorFS, motorFD, motorSS, motorSD;
     public DcMotor[] motoare = new DcMotor[4];
 
-    public DcMotor motorBrat = null;
-    public Servo ghearaStanga = null;
-    public Servo ghearaDreapta = null;
-    public Servo diana = null;
-    public Servo capcana = null;
+    public DcMotor motorBrat;
 
+    public enum ArmPositions {;
+        static final int HOVER_POSITION = -200;
+        static final int AIRPLANE = -3700;
+        static final int AIRPLANE2 = -3000;
+        static final int BACK_BOARD_POSITION = -1800;
+    }
 
-    HardwareMap hwMap = null;
+    public enum ServoPositions {
+        OPEN,
+        CLOSE;
+    }
+
+    public Servo ghearaStanga, ghearaDreapta;
+    public Servo diana, capcana;
+    HardwareMap hwMap;
 
     public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
 
@@ -69,23 +75,52 @@ public class RobotHardware extends LinearOpMode {
         capcana = hwMap.get(Servo.class, "capcana");//control hub 0
 
         diana.setPosition(0.5f);
+
         closeCapcana();
+    }
 
-        motorBrat.setPower(-0.3);
-
-        sleep(1000);
-
-        motorBrat.setPower(0);
+    public void ArmToPosition(int position) {
+        motorBrat.setTargetPosition(position);
+        motorBrat.setPower(1);
+        motorBrat.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void openCapcana() {capcana.setPosition(0);}
 
     public void closeCapcana() {capcana.setPosition(0.374);}
 
-    public void setServoPosition(float x) {
-        float diferenta = -0.01f;
-        ghearaStanga.setPosition(x);
-        ghearaDreapta.setPosition(x + diferenta);
+    public void setServosPosition(ServoPositions servosPosition) {
+        float closePosition = 0;
+        float openPositionLeft = 0.2f;
+        float openPositionRight = 0.25f;
+
+        if(servosPosition == ServoPositions.CLOSE) {
+            ghearaStanga.setPosition(closePosition);
+            ghearaDreapta.setPosition(closePosition);
+        }
+        if(servosPosition == ServoPositions.OPEN) {
+            ghearaStanga.setPosition(openPositionLeft);
+            ghearaDreapta.setPosition(openPositionRight);
+        }
+    }
+    public void setLeftServoPosition(ServoPositions servoPosition) {
+        float closePosition = 0;
+        float openPosition = 0.25f;
+
+        if(servoPosition == ServoPositions.CLOSE)
+            ghearaStanga.setPosition(closePosition);
+        if(servoPosition == ServoPositions.OPEN)
+            ghearaStanga.setPosition(openPosition);
+    }
+
+    public void setRightServoPosition(ServoPositions servoPosition) {
+        float closePosition = 0;
+        float openPosition = 0.22f;
+
+        if(servoPosition == ServoPositions.CLOSE)
+            ghearaDreapta.setPosition(closePosition);
+        if(servoPosition == ServoPositions.OPEN)
+            ghearaDreapta.setPosition(openPosition);
     }
 
     public void frana() {

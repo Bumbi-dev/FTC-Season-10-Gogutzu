@@ -1,7 +1,44 @@
 autonomia pe red sa fie blue in oglinda
-daca dai numa init sa nu se schimbe autonomie + reparat recordu (nrAutonomie)
 
-new hardware for recording  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 boolean dublu = false;
