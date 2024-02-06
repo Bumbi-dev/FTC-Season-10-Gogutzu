@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.VecheaAutonomie;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.ReadWriteFile;
 
-//IF YOU WANT TO CANCEL PRESS PS
-
+//IF YOU WANT TO SAVE PRESS PS
 @Autonomous(name="RECORD AUTONOMIE", group="record")
 public class RECORD extends RecordHardware {
     String direction = "0";
@@ -20,8 +20,12 @@ public class RECORD extends RecordHardware {
 
         if(isStopRequested()) return;
 
+        motorBrat.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBrat.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         runtime.reset();
-        while(opModeIsActive()){
+        while(opModeIsActive()) {
+            telemetry.addLine(motorBrat.getCurrentPosition() + "");
+            telemetry.update();
             prevDirection = direction;
             getDirection();
             proceed();
@@ -71,15 +75,15 @@ public class RECORD extends RecordHardware {
             direction = "b";
             return;
         }
-        if(gamepad1.dpad_left){
+        if(gamepad1.dpad_left) {
             direction = "l";
             return;
         }
-        if(gamepad1.dpad_right){
+        if(gamepad1.dpad_right) {
             direction = "r";
             return;
         }
-        if(gamepad1.left_bumper){
+        if(gamepad1.left_bumper) {
             direction = "tl";
             return;
         }

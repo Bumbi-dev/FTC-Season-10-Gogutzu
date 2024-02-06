@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "✈️GAMEPLAY✈️", group = "Bubu")
-public class PleacaCodu extends RobotHardware{
+public class PleacaCodu extends RobotHardware {
 
     boolean sePrinde = false;
 

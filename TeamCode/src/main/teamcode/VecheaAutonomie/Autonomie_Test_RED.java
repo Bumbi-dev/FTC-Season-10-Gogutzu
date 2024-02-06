@@ -2,13 +2,14 @@ package org.firstinspires.ftc.teamcode.VecheaAutonomie;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-
-@Autonomous(name="BLUE! (play)", group="play")
-public class Autonomie_Dezvoltata_BLUE extends PlayHardware {
+//MAX VOLTAGE = 14
+@Autonomous(name="TEST-RED! (play)", group="zyzz")
+public class Autonomie_Test_RED extends PlayHardware {
     @Override
     public void runOpMode() {
-        path += "_blue";
+        path += "_red_test";
 
         init(hardwareMap);
     }
+
 }
