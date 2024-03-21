@@ -3,11 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+
 @TeleOp(name = "✈️GAMEPLAY✈️", group = "Bubu")
 public class PleacaCodu extends RobotHardware {
 
     boolean sePrinde = false;
-
+    double yaw;
     @Override
     public void runOpMode() {
         init(hardwareMap);
@@ -26,6 +29,16 @@ public class PleacaCodu extends RobotHardware {
                 frana();
                 continue;
             }
+
+            yaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+            if(gamepad1.start)
+                imu.resetYaw();
+
+            telemetry.addLine("" + imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) + '\n');
+
+            telemetry.addLine(Math.cos(yaw) + " " + Math.cos(yaw));
+            telemetry.addLine(Math.sin(yaw) + " " + Math.sin(yaw));
+            telemetry.update();
 
             if(straightMove())
                 continue;
@@ -64,8 +77,10 @@ public class PleacaCodu extends RobotHardware {
         if(gamepad2.dpad_right)
             ArmToPosition(ArmPositions.AIRPLANE2);
 
-        telemetry.addLine(motorBrat.getCurrentPosition() + "");
-        telemetry.update();
+
+
+        //telemetry.addLine(motorBrat.getCurrentPosition() + "");
+        //telemetry.update();
     }
     private void freeFall() {
         if(gamepad2.b) {
@@ -117,32 +132,17 @@ public class PleacaCodu extends RobotHardware {
         float rotatie;
 
         y = gamepad1.right_trigger - gamepad1.left_trigger;
-        rotatie = gamepad1.right_stick_x;
         x = gamepad1.left_stick_x;
+
+        rotatie = gamepad1.right_stick_x;
+
+
 
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
 
         fs += rotatie;   fd -= rotatie;
         ss += rotatie;   sd -= rotatie;
-
-        //vezi daca merge
-        float max;
-        max = Math.max(Math.abs(fs), Math.abs(fd));
-        max = Math.max(max, Math.abs(ss));
-        max = Math.max(max, Math.abs(sd));
-
-        if (max > 1.0) {
-            fs /= max;
-            fd /= max;
-            ss /= max;
-            sd /= max;
-        }
-
-        if(gamepad1.b) {
-            fs /= 2; fd /= 2;
-            ss /= 2; sd /= 2;
-        }
 
         motorFS.setPower(fs);  motorFD.setPower(fd);
         motorSS.setPower(ss);  motorSD.setPower(sd);
@@ -155,16 +155,25 @@ public class PleacaCodu extends RobotHardware {
         float fd, fs, sd, ss;
 
         if(gamepad1.dpad_up)
-            y = 0.5f;
+            y = 1;
 
         if(gamepad1.dpad_down)
-            y -= 0.5f;
+            y -= 1;
 
         if(gamepad1.dpad_right)
-            x = 0.5f;
+            x = 1;
 
         if(gamepad1.dpad_left)
-            x -= 0.5f;
+            x -= 1;
+
+        if(y == 1 || y == -1) {
+            x = (float) Math.sin(yaw) * y;
+            y = (float) Math.cos(yaw) * y;
+        }
+        else if(x == 1 || x == -1) {
+            y = -(float)Math.sin(yaw) * x;
+            x = (float)Math.cos(yaw)  * x;
+        }
 
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
@@ -172,10 +181,18 @@ public class PleacaCodu extends RobotHardware {
         if(fs == 0 && fd == 0 && ss == 0 && sd == 0)//daca nu sa apasat nimic pe dpad returneaza fals
             return false;
 
-        if(gamepad1.b) {
-            fs /= 2; fd /= 2;
-            ss /= 2; sd /= 2;
-        }
+        //if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) >= 0 && imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) <= 90) {
+        //    fs *= Math.cos(yaw);
+        //    sd *= Math.cos(yaw);
+        //    ss *= -Math.cos(yaw);
+        //    fd *= -Math.cos(yaw);
+        //}
+        //if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) < 0 && imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) >= -90) {
+        //    fs *= -Math.cos(yaw);
+        //    sd *= -Math.cos(yaw);
+        //    ss *= Math.cos(yaw);
+        //    fd *= Math.cos(yaw);
+        //}
 
         motorFS.setPower(fs);  motorFD.setPower(fd);
         motorSS.setPower(ss);  motorSD.setPower(sd);

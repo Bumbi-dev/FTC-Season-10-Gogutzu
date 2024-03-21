@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -31,6 +33,7 @@ public class RobotHardware extends LinearOpMode {
     public Servo ghearaStanga, ghearaDreapta;
     public Servo diana, capcana;
     HardwareMap hwMap;
+    BHI260IMU imu;
 
     public void init(HardwareMap ahwMap) {//init_loop ca sa se repete pana dai play
 
@@ -77,6 +80,14 @@ public class RobotHardware extends LinearOpMode {
         diana.setPosition(0.5f);
 
         closeCapcana();
+
+        imu = hwMap.get(BHI260IMU.class, "imu");
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
+
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+
+        imu.initialize(new BHI260IMU.Parameters(orientationOnRobot));
     }
 
     public void ArmToPosition(int position) {
