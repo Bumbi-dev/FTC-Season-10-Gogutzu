@@ -25,7 +25,7 @@ public class PleacaCodu extends RobotHardware {
 
             //Roti: A-frana DPAD-miscari drepte, RT/LT - fata spate
             //LEFT STICK - rotatie,  RIGHT STICK - strafe
-            if(gamepad1.a) {
+            if(gamepad1.a || gamepad2.a) {
                 frana();
                 continue;
             }
@@ -93,11 +93,11 @@ public class PleacaCodu extends RobotHardware {
     }
 
     private void moveServos() {
-        if(Math.abs(gamepad2.right_stick_y) > 0.1)
-            if(gamepad2.right_stick_button)
-                ghearaStanga.setPosition(ghearaStanga.getPosition() + gamepad2.right_stick_y / 100);
-            else
-                ghearaDreapta.setPosition(ghearaDreapta.getPosition() + gamepad2.right_stick_y / 100);
+        //if(Math.abs(gamepad2.right_stick_y) > 0.1)
+        //    if(gamepad2.right_stick_button)
+        //        ghearaStanga.setPosition(ghearaStanga.getPosition() + gamepad2.right_stick_y / 100);
+        //    else
+        //        ghearaDreapta.setPosition(ghearaDreapta.getPosition() + gamepad2.right_stick_y / 100);
 
         if(gamepad2.left_bumper)
             setLeftServoPosition(ServoPositions.OPEN);
@@ -136,13 +136,15 @@ public class PleacaCodu extends RobotHardware {
 
         rotatie = gamepad1.right_stick_x;
 
-
-
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
 
         fs += rotatie;   fd -= rotatie;
         ss += rotatie;   sd -= rotatie;
+
+        if(gamepad2.right_stick_button) {
+            fs /= 2; fd /= 2; ss /=2; sd /=2;
+        }
 
         motorFS.setPower(fs);  motorFD.setPower(fd);
         motorSS.setPower(ss);  motorSD.setPower(sd);
@@ -155,25 +157,25 @@ public class PleacaCodu extends RobotHardware {
         float fd, fs, sd, ss;
 
         if(gamepad1.dpad_up)
-            y = 1;
+            y = 0.5f;
 
         if(gamepad1.dpad_down)
-            y -= 1;
+            y -= 0.5f;
 
         if(gamepad1.dpad_right)
-            x = 1;
+            x = 0.5f;
 
         if(gamepad1.dpad_left)
-            x -= 1;
+            x -= 0.5f;
 
-        if(y == 1 || y == -1) {
-            x = (float) Math.sin(yaw) * y;
-            y = (float) Math.cos(yaw) * y;
-        }
-        else if(x == 1 || x == -1) {
-            y = -(float)Math.sin(yaw) * x;
-            x = (float)Math.cos(yaw)  * x;
-        }
+        //if(y == 1 || y == -1) {
+        //    x = (float) Math.sin(yaw) * y;
+        //    y = (float) Math.cos(yaw) * y;
+        //}
+        //else if(x == 1 || x == -1) {
+        //    y = -(float)Math.sin(yaw) * x;
+        //    x = (float)Math.cos(yaw)  * x;
+        //}
 
         fs = y + x; fd = y - x;
         ss = y - x; sd = y + x;
